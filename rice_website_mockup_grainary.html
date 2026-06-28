@@ -1,0 +1,401 @@
+
+<!DOCTYPE html>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Arial,sans-serif}
+:root{--green:#1A5C2A;--gold:#C8970A;--cream:#FFF8E7;--dark:#1A1A1A;--mid:#444;--light:#F5F0E8;--white:#fff;--accent:#2E7D32}
+body{background:#f0ede8;color:var(--dark)}
+.nav{background:var(--dark);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:36px;height:36px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+.logo-text{font-size:20px;font-weight:700;color:var(--white);letter-spacing:.02em}
+.logo-sub{font-size:10px;color:#aaa;letter-spacing:.1em;text-transform:uppercase}
+.nav-links{display:flex;gap:24px}
+.nav-links a{color:#ccc;font-size:13px;text-decoration:none;cursor:pointer;transition:color .2s}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{background:var(--gold);color:var(--dark);font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;cursor:pointer;border:none}
+
+.page{display:none}
+.page.active{display:block}
+
+/* HOME */
+.hero{background:linear-gradient(135deg,#0d2b12 0%,#1A5C2A 60%,#2d7a3a 100%);padding:64px 24px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.hero-badge{display:inline-block;background:rgba(200,151,10,.2);border:1px solid var(--gold);color:var(--gold);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:16px}
+.hero h1{font-size:36px;font-weight:800;color:var(--white);line-height:1.2;margin-bottom:12px}
+.hero h1 span{color:var(--gold)}
+.hero p{font-size:15px;color:rgba(255,255,255,.75);max-width:480px;margin:0 auto 28px;line-height:1.7}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-primary{background:var(--gold);color:var(--dark);font-weight:700;padding:12px 28px;border-radius:8px;font-size:14px;cursor:pointer;border:none}
+.btn-outline{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.4);padding:12px 28px;border-radius:8px;font-size:14px;cursor:pointer}
+.hero-stats{display:flex;justify-content:center;gap:0;margin-top:48px;border-top:1px solid rgba(255,255,255,.1);padding-top:28px}
+.stat{padding:0 28px;border-right:1px solid rgba(255,255,255,.1);text-align:center}
+.stat:last-child{border-right:none}
+.stat-num{font-size:22px;font-weight:700;color:var(--gold)}
+.stat-label{font-size:11px;color:rgba(255,255,255,.55);margin-top:3px;letter-spacing:.04em}
+
+.section{padding:40px 24px}
+.section-label{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.section-title{font-size:22px;font-weight:700;color:var(--dark);margin-bottom:6px}
+.section-sub{font-size:14px;color:#666;margin-bottom:28px}
+
+.product-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.product-card{background:var(--white);border-radius:12px;overflow:hidden;border:1px solid #e8e0d0;transition:transform .2s,box-shadow .2s;cursor:pointer}
+.product-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.product-img{height:130px;display:flex;align-items:center;justify-content:center;font-size:56px;position:relative}
+.product-img.gold-bg{background:linear-gradient(135deg,#1A5C2A,#2E7D32)}
+.product-img.cream-bg{background:linear-gradient(135deg,#4a3728,#6b5040)}
+.product-img.light-bg{background:linear-gradient(135deg,#2c5f6e,#1a3a42)}
+.product-img.warm-bg{background:linear-gradient(135deg,#5c3d1a,#7a5228)}
+.badge-hero{position:absolute;top:8px;left:8px;background:var(--gold);color:var(--dark);font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px}
+.badge-new{position:absolute;top:8px;left:8px;background:#e53935;color:var(--white);font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px}
+.product-info{padding:14px}
+.product-name{font-size:14px;font-weight:700;color:var(--dark);margin-bottom:3px}
+.product-desc{font-size:12px;color:#777;line-height:1.4;margin-bottom:10px}
+.product-price{font-size:13px;font-weight:700;color:var(--green)}
+.product-price span{font-size:11px;color:#999;font-weight:400}
+.add-btn{width:100%;background:var(--green);color:var(--white);border:none;padding:8px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;margin-top:8px}
+
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.why-card{background:var(--white);border-radius:10px;padding:16px;border-left:3px solid var(--green)}
+.why-icon{font-size:24px;margin-bottom:8px}
+.why-title{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px}
+.why-desc{font-size:12px;color:#666;line-height:1.5}
+
+.diet-banner{background:linear-gradient(135deg,#E8F5E9,#C8E6C9);border-radius:12px;padding:24px;display:flex;align-items:center;gap:20px;margin-top:12px}
+.diet-icon{font-size:48px;flex-shrink:0}
+.diet-title{font-size:16px;font-weight:700;color:var(--green);margin-bottom:6px}
+.diet-text{font-size:13px;color:#444;line-height:1.6}
+.diet-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.diet-tag{background:var(--green);color:var(--white);font-size:11px;padding:3px 10px;border-radius:20px}
+
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.review-card{background:var(--white);border-radius:10px;padding:16px;border:1px solid #eee}
+.review-stars{color:var(--gold);font-size:13px;margin-bottom:6px}
+.review-text{font-size:12px;color:#555;line-height:1.6;font-style:italic;margin-bottom:10px}
+.review-author{font-size:11px;font-weight:700;color:var(--dark)}
+.review-location{font-size:11px;color:#888}
+
+/* SHOP PAGE */
+.shop-header{background:var(--dark);padding:28px 24px;text-align:center}
+.shop-header h2{font-size:22px;font-weight:700;color:var(--white);margin-bottom:4px}
+.shop-header p{font-size:13px;color:#aaa}
+.filter-bar{background:var(--white);padding:12px 24px;display:flex;gap:8px;overflow-x:auto;border-bottom:1px solid #eee}
+.filter-chip{background:var(--light);border:1px solid #ddd;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .2s}
+.filter-chip.active{background:var(--green);color:var(--white);border-color:var(--green)}
+.size-select{width:100%;background:var(--light);border:1.5px solid #ddd;border-radius:6px;padding:8px 10px;font-size:12px;margin-top:6px;cursor:pointer}
+.size-select:focus{outline:none;border-color:var(--green)}
+
+/* OUR RICE PAGE */
+.rice-detail{padding:24px}
+.rice-hero{background:linear-gradient(135deg,#1A5C2A,#2E7D32);border-radius:12px;padding:24px;color:var(--white);margin-bottom:20px}
+.rice-hero h3{font-size:18px;font-weight:700;margin-bottom:6px}
+.rice-hero p{font-size:13px;opacity:.8;line-height:1.6}
+.tags-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.rtag{background:rgba(255,255,255,.2);color:var(--white);font-size:11px;padding:3px 10px;border-radius:20px}
+.nutrition-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}
+.nut-box{background:rgba(255,255,255,.15);border-radius:8px;padding:10px;text-align:center}
+.nut-val{font-size:16px;font-weight:700}
+.nut-label{font-size:10px;opacity:.7;margin-top:2px}
+
+/* WHATSAPP */
+.wa-float{position:fixed;bottom:20px;right:20px;width:50px;height:50px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;box-shadow:0 4px 16px rgba(37,211,102,.4);z-index:999}
+
+/* FOOTER */
+footer{background:var(--dark);padding:28px 24px;color:#aaa}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px}
+.footer-col h4{color:var(--white);font-size:13px;font-weight:700;margin-bottom:10px}
+.footer-col p,.footer-col a{font-size:12px;color:#888;line-height:1.8;display:block;text-decoration:none}
+.footer-bottom{border-top:1px solid #333;margin-top:20px;padding-top:16px;font-size:11px;text-align:center;color:#555}
+</style>
+
+<div class="nav">
+  <div class="logo">
+    <div class="logo-icon">🌾</div>
+    <div>
+      <div class="logo-text">Grainary</div>
+      <div class="logo-sub">South India's Rice Brand</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a onclick="show('home')">Home</a>
+    <a onclick="show('shop')">Shop</a>
+    <a onclick="show('ourrice')">Our Rice</a>
+    <a onclick="show('diet')">Diet Corner</a>
+    <a onclick="show('about')">About</a>
+  </div>
+  <button class="nav-cta" onclick="show('shop')">Order Now</button>
+</div>
+
+<!-- HOME PAGE -->
+<div id="home" class="page active">
+  <div class="hero">
+    <div class="hero-badge">🌾 Farm to Your Kitchen — Bangalore</div>
+    <h1>South India's Freshest<br><span>Aged Rice, Delivered</span></h1>
+    <p>Premium Sona Masoori, RNR & Raw rice — sourced from Tungabhadra belt, aged to perfection. Low starch, diet-safe, Bangalore-delivered.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="show('shop')">Shop Now — Free Delivery ₹500+</button>
+      <button class="btn-outline" onclick="show('ourrice')">Explore Our Rice</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">1–24 mo</div><div class="stat-label">Aged Old Rice</div></div>
+      <div class="stat"><div class="stat-num">&lt;1%</div><div class="stat-label">Broken Grains</div></div>
+      <div class="stat"><div class="stat-num">4 types</div><div class="stat-label">South Indian Varieties</div></div>
+      <div class="stat"><div class="stat-num">1–25 kg</div><div class="stat-label">All Pack Sizes</div></div>
+    </div>
+  </div>
+
+  <div class="section" style="background:var(--cream)">
+    <div class="section-label">Our Products</div>
+    <div class="section-title">Premium South Indian Rice</div>
+    <div class="section-sub">Sortex cleaned, FSSAI certified, Bangalore delivery in 24 hrs</div>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-img gold-bg"><span>🌾</span><span class="badge-hero">HERO</span></div>
+        <div class="product-info">
+          <div class="product-name">Sona Masoori Old Raw</div>
+          <div class="product-desc">Aged 12–24 months. Low starch, diet-safe. Light & fluffy. Best for daily meals, diet plans & diabetics.</div>
+          <div class="product-price">₹75/kg <span>— from ₹360 (5 kg)</span></div>
+          <select class="size-select"><option>Choose Pack Size</option><option>1 kg — ₹75</option><option>5 kg — ₹360</option><option>10 kg — ₹700</option><option>25 kg — ₹1,600</option></select>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img cream-bg"><span>🍚</span></div>
+        <div class="product-info">
+          <div class="product-name">Sona Masoori Steam</div>
+          <div class="product-desc">Parboiled. Cooks faster, easier digestion. Perfect for busy families & tiffin meals.</div>
+          <div class="product-price">₹68/kg <span>— from ₹325 (5 kg)</span></div>
+          <select class="size-select"><option>Choose Pack Size</option><option>1 kg — ₹68</option><option>5 kg — ₹325</option><option>10 kg — ₹630</option><option>25 kg — ₹1,440</option></select>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img light-bg"><span>🫙</span></div>
+        <div class="product-info">
+          <div class="product-name">Raw Rice (Idli/Dosa)</div>
+          <div class="product-desc">Short grain, high starch. The perfect batter-making rice. South Indian kitchen essential.</div>
+          <div class="product-price">₹58/kg <span>— from ₹275 (5 kg)</span></div>
+          <select class="size-select"><option>Choose Pack Size</option><option>1 kg — ₹58</option><option>5 kg — ₹275</option><option>10 kg — ₹540</option><option>25 kg — ₹1,230</option></select>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img warm-bg"><span>✨</span><span class="badge-new">PREMIUM</span></div>
+        <div class="product-info">
+          <div class="product-name">RNR / Jeera Sona</div>
+          <div class="product-desc">18+ months aged. Aromatic, slender grain. Restaurant-quality rice at home. Low fat, low GI.</div>
+          <div class="product-price">₹90/kg <span>— from ₹430 (5 kg)</span></div>
+          <select class="size-select"><option>Choose Pack Size</option><option>1 kg — ₹90</option><option>5 kg — ₹430</option><option>10 kg — ₹840</option><option>25 kg — ₹1,920</option></select>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="diet-banner">
+      <div class="diet-icon">🥗</div>
+      <div>
+        <div class="diet-title">You CAN eat rice on a diet — here's why</div>
+        <div class="diet-text">Our aged Sona Masoori raw rice has naturally lower starch and a low glycemic index. It's lighter on your stomach and gentler on blood sugar — making it the smart choice for weight watchers and diabetics.</div>
+        <div class="diet-tags">
+          <span class="diet-tag">Low GI</span>
+          <span class="diet-tag">Low Starch</span>
+          <span class="diet-tag">Diabetic Friendly</span>
+          <span class="diet-tag">Light & Fluffy</span>
+          <span class="diet-tag">Easily Digestible</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" style="background:var(--cream)">
+    <div class="section-label">Why Grainary</div>
+    <div class="section-title">What makes us different</div>
+    <div class="why-grid">
+      <div class="why-card"><div class="why-icon">🌱</div><div class="why-title">Direct Sourcing</div><div class="why-desc">Paddy sourced directly from Tungabhadra river belt farmers in Karnataka & Andhra Pradesh</div></div>
+      <div class="why-card"><div class="why-icon">⏳</div><div class="why-title">Aged 12–24 Months</div><div class="why-desc">Old rice = lower moisture, lower starch, better taste. We age every batch before packing.</div></div>
+      <div class="why-card"><div class="why-icon">🔬</div><div class="why-title">Lab Tested</div><div class="why-desc">&lt;1% broken grains · &lt;10% moisture · &lt;0.3% contamination. Published on every bag.</div></div>
+      <div class="why-card"><div class="why-icon">📦</div><div class="why-title">All Pack Sizes</div><div class="why-desc">From 1 kg trial packs to 25 kg bulk orders. Subscribe & save 5% on monthly auto-delivery.</div></div>
+      <div class="why-card"><div class="why-icon">🚚</div><div class="why-title">Bangalore Delivery</div><div class="why-desc">Free delivery above ₹500. All areas covered. 10-min delivery via Blinkit & Zepto.</div></div>
+      <div class="why-card"><div class="why-icon">✅</div><div class="why-title">FSSAI Certified</div><div class="why-desc">Fully licensed. Sortex cleaned. Packed hygienic. FSSAI number on every pack.</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">What Customers Say</div>
+    <div class="section-title">Bangalore families love Grainary</div>
+    <div class="section-sub">Real reviews from our customers</div>
+    <div class="reviews-grid">
+      <div class="review-card"><div class="review-stars">★★★★★</div><div class="review-text">"Been buying from them for 3 months now. The old Sona Masoori tastes completely different — softer, less sticky, and my doctor said my sugar levels are better too!"</div><div class="review-author">Priya Ramakrishnan</div><div class="review-location">HSR Layout, Bangalore</div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><div class="review-text">"Finally a proper rice brand that understands South Indian cooking. Their raw rice makes the best dosa batter I've ever had. Even my mother approves!"</div><div class="review-author">Suresh Nair</div><div class="review-location">Koramangala, Bangalore</div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><div class="review-text">"The 25 kg bulk pack is a great deal. I set up the monthly subscription — never running out of rice again! Delivery was fast and packaging was excellent."</div><div class="review-author">Kavitha Iyer</div><div class="review-location">Whitefield, Bangalore</div></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col"><h4>Grainary</h4><p>South India's premium rice brand. Farm-sourced, aged, Bangalore-delivered.</p><p style="margin-top:8px;color:#666">📞 WhatsApp: +91 XXXXX XXXXX</p><p style="color:#666">📧 hello@grainary.in</p></div>
+      <div class="footer-col"><h4>Shop</h4><a>Sona Masoori Old Raw</a><a>Sona Masoori Steam</a><a>Raw Rice (Idli/Dosa)</a><a>RNR / Jeera Sona</a><a>Bulk Orders (25 kg)</a></div>
+      <div class="footer-col"><h4>Info</h4><a>About Us</a><a>Diet Corner Blog</a><a>Delivery Info</a><a>Track Order</a><a>Bulk Enquiry</a></div>
+      <div class="footer-col"><h4>Platforms</h4><a>Amazon India</a><a>Blinkit (10-min)</a><a>Zepto (10-min)</a><a>Swiggy Instamart</a><a>BigBasket</a></div>
+    </div>
+    <div class="footer-bottom">FSSAI Lic No: XXXXXXXXXXXXXXXX · © 2026 Grainary · Made in Bangalore 🇮🇳</div>
+  </footer>
+</div>
+
+<!-- SHOP PAGE -->
+<div id="shop" class="page">
+  <div class="shop-header">
+    <h2>Shop All Rice</h2>
+    <p>1 kg to 25 kg packs · Free delivery above ₹500 · Bangalore only</p>
+  </div>
+  <div class="filter-bar">
+    <div class="filter-chip active">All Types</div>
+    <div class="filter-chip">Sona Masoori</div>
+    <div class="filter-chip">Raw Rice</div>
+    <div class="filter-chip">RNR Rice</div>
+    <div class="filter-chip">Old / Aged</div>
+    <div class="filter-chip">Steam</div>
+    <div class="filter-chip">Bulk (10–25 kg)</div>
+    <div class="filter-chip">Diet Friendly</div>
+  </div>
+  <div class="section">
+    <div style="background:#E8F5E9;border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:var(--green);font-weight:500">
+      🔔 Subscribe & Save: Set up monthly auto-delivery and save 5% on every order. <span style="text-decoration:underline;cursor:pointer">Learn more →</span>
+    </div>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-img gold-bg"><span>🌾</span><span class="badge-hero">HERO</span></div>
+        <div class="product-info">
+          <div class="product-name">Sona Masoori Old Raw</div>
+          <div class="product-desc">Aged 12–24 months · Low starch · Diet-safe · Tungabhadra belt</div>
+          <select class="size-select"><option>1 kg — ₹75</option><option>5 kg — ₹360</option><option>10 kg — ₹700</option><option>15 kg — ₹1,020</option><option>20 kg — ₹1,320</option><option>25 kg — ₹1,600</option></select>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img cream-bg"><span>🍚</span></div>
+        <div class="product-info">
+          <div class="product-name">Sona Masoori Steam</div>
+          <div class="product-desc">Parboiled · Faster cooking · Easier digestion · Daily family use</div>
+          <select class="size-select"><option>1 kg — ₹68</option><option>5 kg — ₹325</option><option>10 kg — ₹630</option><option>15 kg — ₹920</option><option>20 kg — ₹1,190</option><option>25 kg — ₹1,440</option></select>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img light-bg"><span>🫙</span></div>
+        <div class="product-info">
+          <div class="product-name">Raw Rice — Idli/Dosa Grade</div>
+          <div class="product-desc">Short grain · High starch · Perfect batter base · South Indian staple</div>
+          <select class="size-select"><option>1 kg — ₹58</option><option>5 kg — ₹275</option><option>10 kg — ₹540</option><option>15 kg — ₹790</option><option>20 kg — ₹1,020</option><option>25 kg — ₹1,230</option></select>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img warm-bg"><span>✨</span><span class="badge-new">PREMIUM</span></div>
+        <div class="product-info">
+          <div class="product-name">RNR / Jeera Sona Rice</div>
+          <div class="product-desc">18+ months aged · Aromatic · Low fat · Restaurant-quality</div>
+          <select class="size-select"><option>1 kg — ₹90</option><option>5 kg — ₹430</option><option>10 kg — ₹840</option><option>15 kg — ₹1,230</option><option>20 kg — ₹1,580</option><option>25 kg — ₹1,920</option></select>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--light);border-radius:10px;padding:18px;margin-top:20px">
+      <div style="font-size:14px;font-weight:700;color:var(--dark);margin-bottom:8px">📦 Bulk Order? Need 50 kg+?</div>
+      <div style="font-size:13px;color:#555;margin-bottom:10px">For housing societies, offices, restaurants and bulk buyers — contact us for custom pricing and scheduled delivery.</div>
+      <button class="btn-primary" style="font-size:13px;padding:10px 20px">WhatsApp for Bulk Order</button>
+    </div>
+  </div>
+</div>
+
+<!-- OUR RICE PAGE -->
+<div id="ourrice" class="page">
+  <div class="shop-header">
+    <h2>Our Rice — The Full Story</h2>
+    <p>Every variety, where it comes from, why it matters</p>
+  </div>
+  <div class="rice-detail">
+    <div class="rice-hero">
+      <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;opacity:.6;margin-bottom:8px">⭐ Hero Product</div>
+      <h3>Sona Masoori Old Raw Rice — 12 to 24 Months Aged</h3>
+      <p>Sourced directly from the Tungabhadra river belt of Siruguppa-Ballari region in Karnataka. Paddy is aged for 12–24 months before milling — this reduces moisture and starch naturally, giving you lighter, fluffier, healthier rice without any chemicals.</p>
+      <div class="tags-row">
+        <span class="rtag">Low GI</span><span class="rtag">Low Starch</span><span class="rtag">Diet Safe</span><span class="rtag">Diabetic Friendly</span><span class="rtag">Sortex Cleaned</span><span class="rtag">FSSAI Certified</span>
+      </div>
+      <div class="nutrition-grid">
+        <div class="nut-box"><div class="nut-val">&lt;1%</div><div class="nut-label">Broken grains</div></div>
+        <div class="nut-box"><div class="nut-val">&lt;10%</div><div class="nut-label">Moisture</div></div>
+        <div class="nut-box"><div class="nut-val">Low GI</div><div class="nut-label">Glycemic Index</div></div>
+        <div class="nut-box"><div class="nut-val">12–24 mo</div><div class="nut-label">Aged</div></div>
+      </div>
+    </div>
+    <div class="why-grid">
+      <div class="why-card" style="border-left-color:var(--gold)"><div class="why-icon">🍽️</div><div class="why-title">Best For</div><div class="why-desc">Daily white rice, sambar rice, curd rice, coconut rice, pongal, lemon rice. Every South Indian meal.</div></div>
+      <div class="why-card" style="border-left-color:var(--gold)"><div class="why-icon">⏱️</div><div class="why-title">Cooking</div><div class="why-desc">Soak 15–20 min. 1:2 rice-to-water ratio. Simmer 10–15 min. Drain and serve hot with any curry or dal.</div></div>
+      <div class="why-card" style="border-left-color:var(--gold)"><div class="why-icon">🏥</div><div class="why-title">Health Angle</div><div class="why-desc">Ideal for diabetics, weight watchers, and fitness-conscious families. Low glycemic means slower sugar release.</div></div>
+      <div class="why-card" style="border-left-color:var(--gold)"><div class="why-icon">📍</div><div class="why-title">Origin</div><div class="why-desc">Tungabhadra river belt, Karnataka — the same paddy belt that has grown South India's finest Sona Masoori for centuries.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DIET CORNER PAGE -->
+<div id="diet" class="page">
+  <div class="shop-header">
+    <h2>Diet Corner</h2>
+    <p>Rice, health, and everything in between</p>
+  </div>
+  <div class="section">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px">
+      <div style="background:var(--white);border-radius:10px;overflow:hidden;border:1px solid #eee;cursor:pointer">
+        <div style="background:linear-gradient(135deg,#1A5C2A,#2E7D32);height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🩺</div>
+        <div style="padding:14px"><div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:6px">Can diabetics eat Sona Masoori rice?</div><div style="font-size:12px;color:#777">Yes — here's the science behind low-GI rice and blood sugar control</div></div>
+      </div>
+      <div style="background:var(--white);border-radius:10px;overflow:hidden;border:1px solid #eee;cursor:pointer">
+        <div style="background:linear-gradient(135deg,#4a3728,#6b5040);height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">⚖️</div>
+        <div style="padding:14px"><div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:6px">Rice for weight loss — the truth</div><div style="font-size:12px;color:#777">Why old aged Sona Masoori is better for your waistline than fresh rice</div></div>
+      </div>
+      <div style="background:var(--white);border-radius:10px;overflow:hidden;border:1px solid #eee;cursor:pointer">
+        <div style="background:linear-gradient(135deg,#2c5f6e,#1a3a42);height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🌾</div>
+        <div style="padding:14px"><div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:6px">Old rice vs new rice — which is better?</div><div style="font-size:12px;color:#777">Why aging matters: moisture, starch, and cooking quality explained</div></div>
+      </div>
+      <div style="background:var(--white);border-radius:10px;overflow:hidden;border:1px solid #eee;cursor:pointer">
+        <div style="background:linear-gradient(135deg,#5c3d1a,#7a5228);height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🍳</div>
+        <div style="padding:14px"><div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:6px">Perfect idli-dosa batter guide</div><div style="font-size:12px;color:#777">The right rice-to-urad ratio, soaking time, and fermentation tips</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT PAGE -->
+<div id="about" class="page">
+  <div class="shop-header"><h2>About Grainary</h2><p>Why we started and what we stand for</p></div>
+  <div class="section">
+    <div style="background:var(--white);border-radius:12px;padding:24px;border:1px solid #eee;margin-bottom:16px">
+      <div style="font-size:18px;font-weight:700;color:var(--green);margin-bottom:12px">Our Story</div>
+      <div style="font-size:14px;color:#555;line-height:1.8">We started Grainary because we couldn't find good, honestly sourced Sona Masoori rice in Bangalore with a clear story behind it. The best rice we ever ate came from a small mill in the Tungabhadra belt — and we wanted to bring that directly to every kitchen in Bangalore, with full transparency about how it's sourced, aged, and packed.</div>
+    </div>
+    <div class="why-grid">
+      <div class="why-card"><div class="why-icon">🌾</div><div class="why-title">Source</div><div class="why-desc">Tungabhadra river belt, Siruguppa-Ballari region, Karnataka. Direct from farmers.</div></div>
+      <div class="why-card"><div class="why-icon">⏳</div><div class="why-title">Process</div><div class="why-desc">Paddy aged 12–24 months → Milled → Sortex cleaned → Quality tested → Packed & shipped.</div></div>
+      <div class="why-card"><div class="why-icon">📍</div><div class="why-title">Base</div><div class="why-desc">Bangalore, Karnataka. Delivering to all Bangalore pincodes. Expanding to Chennai and Hyderabad next.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="wa-float" title="Chat on WhatsApp">💬</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  chip.addEventListener('click', function() {
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
