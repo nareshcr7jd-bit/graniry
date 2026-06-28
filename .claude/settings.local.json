@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.kitchenkingrice.com)",
+      "Bash(cd \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\" && npx create-next-app@latest . --typescript --tailwind --app --src-dir=false --import-alias=\"@/*\" --no-git --yes 2>&1)",
+      "Bash(cd \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\" && npx create-next-app@latest store --typescript --tailwind --app --src-dir=false --import-alias=\"@/*\" --no-git --yes 2>&1)",
+      "Bash(cd \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\" && npm install zustand 2>&1 && npx shadcn@latest init --yes --defaults 2>&1)",
+      "Bash(cd \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\" && npx tsc --noEmit 2>&1 | head -60)",
+      "Bash(cd \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\" && npx tsc --noEmit 2>&1 | head -40)",
+      "Bash(cd \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\" && npm run dev 2>&1)",
+      "Bash(find \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\\\\app\" -name \"*.tsx\" -o -name \"*.ts\" 2>/dev/null | sort)",
+      "Bash(find \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\\\\components\" \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\\\\lib\" -name \"*.tsx\" -o -name \"*.ts\" 2>/dev/null | sort)",
+      "Bash(cd \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\" && npm run lint 2>&1)"
+    ]
+  }
+}
