@@ -1,3 +1,5 @@
+"use client"
+
 const REVIEWS = [
   {
     stars: 5,

@@ -89,7 +89,6 @@ export function HealthScienceSection() {
             note="Multigrain has 31% more protein than regular rice"
             data={proteinData}
             unit="g"
-            maxLabel="12g"
           />
 
           {/* Fibre chart */}
@@ -99,7 +98,6 @@ export function HealthScienceSection() {
             note="Brown Rice has 8× more fibre than polished white"
             data={fibreData}
             unit="g"
-            maxLabel="5g"
           />
         </div>
 

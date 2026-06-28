@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import { PRODUCTS } from "@/lib/products"
 import { formatPrice } from "@/lib/utils"

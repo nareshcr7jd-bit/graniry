@@ -1,3 +1,5 @@
+"use client"
+
 import { PRODUCTS } from "@/lib/products"
 import { BagMockup } from "@/components/product/BagMockup"
 import Link from "next/link"
