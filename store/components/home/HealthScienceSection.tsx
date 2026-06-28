@@ -23,9 +23,9 @@ export function HealthScienceSection() {
   return (
     <section
       id="health"
+      className="section-padding"
       style={{
         background: "linear-gradient(140deg, var(--forest) 0%, #081A0D 100%)",
-        padding: "100px 24px",
       }}
     >
       <div style={{ maxWidth: 1320, margin: "0 auto" }}>
@@ -120,7 +120,7 @@ export function HealthScienceSection() {
               lineHeight: 1.8,
             }}
           >
-            &ldquo;Kitchen King has 573+ verified reviews on aged rice. Not one mentions GI, starch, or
+            &ldquo;Many brands have 573+ verified reviews on aged rice. But not one mentions GI, starch, or
             diet benefit. Not one product description explains why aging matters. Grainary owns that
             narrative — every bag, every Reel, every listing teaches the science.&rdquo;
           </p>

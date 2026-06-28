@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { useEffect, useState } from "react"
 import { useCartStore } from "@/lib/store/cart"
 
 function GrainaryLogo() {
@@ -67,7 +68,10 @@ const NAV_LINKS = [
 
 function CartIcon() {
   const { itemCount, openCart } = useCartStore()
-  const count = itemCount()
+  const [mounted, setMounted] = useState(false)
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => setMounted(true), [])
+  const count = mounted ? itemCount() : 0
 
   return (
     <button

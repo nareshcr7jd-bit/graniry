@@ -43,7 +43,8 @@ export function WhyGrainary() {
   return (
     <section
       id="why"
-      style={{ background: "var(--cream)", padding: "100px 24px" }}
+      className="section-padding"
+      style={{ background: "var(--cream)" }}
     >
       <div style={{ maxWidth: 1320, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 56 }}>
@@ -75,20 +76,14 @@ export function WhyGrainary() {
                 border: "1px solid rgba(0,0,0,0.06)",
                 borderRadius: 16,
                 padding: "28px 28px 32px",
-                transition: "all 0.3s",
+                transition: "transform 0.3s var(--ease-out)",
                 cursor: "default",
               }}
               onMouseEnter={e => {
-                const el = e.currentTarget as HTMLElement
-                el.style.borderColor = "rgba(28,92,46,0.28)"
-                el.style.transform = "translateY(-5px)"
-                el.style.boxShadow = "0 14px 40px rgba(0,0,0,0.09)"
+                (e.currentTarget as HTMLElement).style.transform = "translateY(-5px)"
               }}
               onMouseLeave={e => {
-                const el = e.currentTarget as HTMLElement
-                el.style.borderColor = "rgba(0,0,0,0.06)"
-                el.style.transform = "translateY(0)"
-                el.style.boxShadow = "none"
+                (e.currentTarget as HTMLElement).style.transform = "translateY(0)"
               }}
             >
               <div

@@ -61,7 +61,7 @@ export default function PackagingPage() {
                       className="group cursor-pointer"
                     >
                       <div
-                        style={{ transition: "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)" }}
+                        style={{ transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)", willChange: "transform" }}
                         className="group-hover:-translate-y-4 group-hover:scale-105 group-hover:drop-shadow-2xl"
                       >
                         <BagMockup

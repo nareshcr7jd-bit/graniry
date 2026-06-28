@@ -51,7 +51,8 @@ export function FAQ() {
   return (
     <section
       id="faq"
-      style={{ background: "var(--cream)", padding: "100px 24px" }}
+      className="section-padding"
+      style={{ background: "var(--cream)" }}
     >
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 56 }}>

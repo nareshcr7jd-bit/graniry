@@ -11,7 +11,9 @@
       "Bash(find \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\\\\app\" -name \"*.tsx\" -o -name \"*.ts\" 2>/dev/null | sort)",
       "Bash(find \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\\\\components\" \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\\\\lib\" -name \"*.tsx\" -o -name \"*.ts\" 2>/dev/null | sort)",
       "Bash(cd \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\" && npm run lint 2>&1)",
-      "Bash(cd \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\" && npm run build 2>&1)"
+      "Bash(cd \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\" && npm run build 2>&1)",
+      "Bash(cd \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\" && npm run lint 2>&1 && echo \"LINT OK\" && npm run build 2>&1)",
+      "Bash(cd \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\" && npm install drizzle-orm pg dotenv && npm install -D drizzle-kit @types/pg 2>&1)"
     ]
   }
 }

@@ -111,7 +111,7 @@ export function HeroSection() {
                   textDecoration: "none",
                   display: "inline-block",
                   letterSpacing: "0.02em",
-                  transition: "all 0.2s",
+                  transition: "transform 0.2s, opacity 0.2s",
                   minHeight: 52,
                 }}
               >
@@ -140,7 +140,8 @@ export function HeroSection() {
             <div
               style={{
                 display: "flex",
-                gap: 0,
+                flexWrap: "wrap",
+                gap: "16px 0",
                 borderTop: "1px solid rgba(255,255,255,0.07)",
                 paddingTop: 28,
               }}
@@ -154,9 +155,10 @@ export function HeroSection() {
                 <div
                   key={s.label}
                   style={{
-                    paddingRight: i < 3 ? 24 : 0,
-                    marginRight: i < 3 ? 24 : 0,
+                    paddingRight: i < 3 ? 20 : 0,
+                    marginRight: i < 3 ? 20 : 0,
                     borderRight: i < 3 ? "1px solid rgba(255,255,255,0.07)" : "none",
+                    minWidth: "max-content",
                   }}
                 >
                   <div
@@ -221,19 +223,13 @@ export function HeroSection() {
                       border: "1px solid rgba(255,255,255,0.06)",
                       borderRadius: 12,
                       cursor: "pointer",
-                      transition: "all 0.2s",
+                      transition: "transform 0.2s var(--ease-out)",
                     }}
                     onMouseEnter={e => {
-                      const el = e.currentTarget as HTMLElement
-                      el.style.background = "rgba(200,150,10,0.08)"
-                      el.style.borderColor = "rgba(200,150,10,0.18)"
-                      el.style.transform = "translateX(4px)"
+                      (e.currentTarget as HTMLElement).style.transform = "translateX(4px)"
                     }}
                     onMouseLeave={e => {
-                      const el = e.currentTarget as HTMLElement
-                      el.style.background = "rgba(255,255,255,0.04)"
-                      el.style.borderColor = "rgba(255,255,255,0.06)"
-                      el.style.transform = "translateX(0)"
+                      (e.currentTarget as HTMLElement).style.transform = "translateX(0)"
                     }}
                   >
                     <div style={{ display: "flex", alignItems: "center", gap: 12 }}>

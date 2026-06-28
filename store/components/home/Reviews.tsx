@@ -63,7 +63,8 @@ export function Reviews() {
   return (
     <section
       id="reviews"
-      style={{ background: "var(--forest)", padding: "100px 24px" }}
+      className="section-padding"
+      style={{ background: "var(--forest)" }}
     >
       <div style={{ maxWidth: 1320, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 56 }}>
@@ -95,17 +96,13 @@ export function Reviews() {
                 border: "1px solid rgba(255,255,255,0.09)",
                 borderRadius: 16,
                 padding: 28,
-                transition: "all 0.25s",
+                transition: "transform 0.25s var(--ease-out)",
               }}
               onMouseEnter={e => {
-                const el = e.currentTarget as HTMLElement
-                el.style.background = "rgba(255,255,255,0.07)"
-                el.style.transform = "translateY(-4px)"
+                (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)"
               }}
               onMouseLeave={e => {
-                const el = e.currentTarget as HTMLElement
-                el.style.background = "rgba(255,255,255,0.05)"
-                el.style.transform = "translateY(0)"
+                (e.currentTarget as HTMLElement).style.transform = "translateY(0)"
               }}
             >
               <Stars count={r.stars} />

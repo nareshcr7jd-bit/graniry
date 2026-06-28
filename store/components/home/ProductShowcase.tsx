@@ -24,7 +24,8 @@ export function ProductShowcase() {
   return (
     <section
       id="products"
-      style={{ background: "var(--parchment)", padding: "100px 24px" }}
+      className="section-padding"
+      style={{ background: "var(--parchment)" }}
     >
       <div style={{ maxWidth: 1320, margin: "0 auto" }}>
         {/* Header */}
@@ -87,7 +88,7 @@ export function ProductShowcase() {
                 padding: "9px 18px",
                 borderRadius: 8,
                 cursor: "pointer",
-                transition: "all 0.18s",
+                transition: "background 0.18s, color 0.18s, border-color 0.18s",
                 whiteSpace: "nowrap",
                 flexShrink: 0,
                 minHeight: 44,

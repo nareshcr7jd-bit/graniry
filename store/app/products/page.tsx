@@ -84,10 +84,10 @@ export default function ProductsPage() {
                   padding: "8px 16px",
                   borderRadius: 7,
                   cursor: "pointer",
-                  transition: "all 0.18s",
+                  transition: "background 0.18s, color 0.18s, border-color 0.18s",
                   whiteSpace: "nowrap",
                   flexShrink: 0,
-                  minHeight: 36,
+                  minHeight: 44,
                   display: "flex",
                   alignItems: "center",
                   gap: 6,
@@ -112,7 +112,7 @@ export default function ProductsPage() {
               color: "#555",
               background: "white",
               cursor: "pointer",
-              minHeight: 36,
+              minHeight: 44,
             }}
           >
             <option value="default">Sort: Default</option>

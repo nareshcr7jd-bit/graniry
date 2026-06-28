@@ -41,7 +41,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${inter.variable} h-full`}>
+    <html lang="en" className={`${playfair.variable} ${inter.variable} h-full`} suppressHydrationWarning>
       <body className="min-h-full flex flex-col antialiased" style={{ background: "var(--cream)" }}>
         <Navbar />
         <CartDrawer />

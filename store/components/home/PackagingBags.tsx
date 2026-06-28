@@ -6,7 +6,8 @@ export function PackagingBags() {
   return (
     <section
       id="packaging"
-      style={{ background: "var(--dark, #111)", padding: "100px 24px" }}
+      className="section-padding"
+      style={{ background: "var(--dark, #111)" }}
     >
       <div style={{ maxWidth: 1320, margin: "0 auto" }}>
         {/* Header */}

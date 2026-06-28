@@ -344,15 +344,13 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                     border: "1px solid rgba(0,0,0,0.06)",
                     borderRadius: 14,
                     overflow: "hidden",
-                    transition: "all 0.25s",
+                    transition: "transform 0.25s var(--ease-out)",
                   }}
                   onMouseEnter={e => {
                     (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)"
-                    ;(e.currentTarget as HTMLElement).style.boxShadow = "0 14px 36px rgba(0,0,0,0.1)"
                   }}
                   onMouseLeave={e => {
                     (e.currentTarget as HTMLElement).style.transform = "translateY(0)"
-                    ;(e.currentTarget as HTMLElement).style.boxShadow = "none"
                   }}
                 >
                   <div

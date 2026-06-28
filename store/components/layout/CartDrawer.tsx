@@ -1,9 +1,9 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { useCartStore, CartItem } from "@/lib/store/cart"
 import { formatPrice, whatsappOrderLink } from "@/lib/utils"
 import Link from "next/link"
-import { useEffect } from "react"
 
 function CartItemRow({ item }: { item: CartItem }) {
   const { removeItem, updateQty } = useCartStore()
@@ -81,24 +81,31 @@ function CartItemRow({ item }: { item: CartItem }) {
 }
 
 export function CartDrawer() {
+  // All hooks must be called unconditionally before any early return
   const { items, isOpen, closeCart, total, clearCart } = useCartStore()
-  const cartTotal = total()
+  const [mounted, setMounted] = useState(false)
 
-  // Close on escape
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => setMounted(true), [])
+
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === "Escape") closeCart() }
     window.addEventListener("keydown", handler)
     return () => window.removeEventListener("keydown", handler)
   }, [closeCart])
 
-  // Lock body scroll when open
   useEffect(() => {
+    if (!mounted) return
     if (isOpen) document.body.style.overflow = "hidden"
     else document.body.style.overflow = ""
     return () => { document.body.style.overflow = "" }
-  }, [isOpen])
+  }, [isOpen, mounted])
 
+  const cartTotal = total()
   const waLink = items.length > 0 ? whatsappOrderLink(items) : "#"
+
+  // Don't render markup until client-side (avoids localStorage hydration mismatch)
+  if (!mounted) return null
 
   return (
     <>

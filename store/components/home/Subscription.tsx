@@ -2,7 +2,8 @@ export function Subscription() {
   return (
     <section
       id="subscribe"
-      style={{ background: "var(--parchment)", padding: "100px 24px" }}
+      className="section-padding"
+      style={{ background: "var(--parchment)" }}
     >
       <div style={{ maxWidth: 1320, margin: "0 auto" }}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
