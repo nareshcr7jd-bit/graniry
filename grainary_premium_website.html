@@ -48,12 +48,43 @@ body{background:var(--cream);color:var(--dark);font-family:'Inter',sans-serif;ov
 .page.active{display:block}
 
 /* ======== HERO ======== */
-.hero{min-height:100vh;background:var(--forest);position:relative;display:flex;align-items:center;overflow:hidden;padding-top:68px}
-.hero-bg{position:absolute;inset:0;background:
-  radial-gradient(ellipse 60% 70% at 70% 40%,rgba(28,92,46,0.2) 0%,transparent 70%),
-  radial-gradient(ellipse 40% 40% at 20% 80%,rgba(200,150,10,0.06) 0%,transparent 60%)}
-.hero-grid{position:absolute;inset:0;opacity:0.025;background-image:linear-gradient(rgba(255,255,255,0.6) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.6) 1px,transparent 1px);background-size:56px 56px}
-.hero-orb{position:absolute;right:-80px;top:50%;transform:translateY(-60%);width:540px;height:540px;border-radius:50%;background:radial-gradient(circle,rgba(46,139,74,0.14) 0%,transparent 70%);pointer-events:none}
+.hero{min-height:100vh;background:#060F08;position:relative;display:flex;align-items:center;overflow:hidden;padding-top:68px}
+/* Rice field canvas */
+#rice-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+/* Gradient overlays on top of canvas */
+.hero-overlay{position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:
+    linear-gradient(to right, rgba(6,15,8,0.78) 0%, rgba(6,15,8,0.45) 50%, rgba(6,15,8,0.1) 100%),
+    linear-gradient(to top, rgba(6,15,8,0.85) 0%, transparent 40%);
+}
+/* Animated light rays */
+.hero-rays{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.hero-ray{position:absolute;top:-10%;width:2px;height:130%;opacity:0;
+  background:linear-gradient(to bottom,transparent,rgba(200,150,10,0.12),transparent);
+  transform-origin:top center;
+  animation:ray-sway 8s ease-in-out infinite;
+}
+.hero-ray:nth-child(1){left:58%;width:80px;animation-delay:0s;animation-duration:9s}
+.hero-ray:nth-child(2){left:65%;width:40px;animation-delay:2s;animation-duration:7s}
+.hero-ray:nth-child(3){left:72%;width:60px;animation-delay:4s;animation-duration:10s}
+.hero-ray:nth-child(4){left:80%;width:30px;animation-delay:1s;animation-duration:8s}
+.hero-ray:nth-child(5){left:45%;width:50px;animation-delay:3s;animation-duration:11s}
+@keyframes ray-sway{
+  0%{opacity:0;transform:rotate(-5deg)}
+  25%{opacity:1}
+  50%{opacity:0.6;transform:rotate(3deg)}
+  75%{opacity:1}
+  100%{opacity:0;transform:rotate(-5deg)}
+}
+/* Mist / fog layer */
+.hero-mist{position:absolute;bottom:0;left:0;right:0;height:38%;pointer-events:none;z-index:2;
+  background:linear-gradient(to top, rgba(15,40,20,0.6) 0%, rgba(15,40,20,0.2) 60%, transparent 100%);
+  animation:mist-drift 12s ease-in-out infinite alternate;
+}
+@keyframes mist-drift{
+  0%{transform:translateX(-2%) scaleX(1.04)}
+  100%{transform:translateX(2%) scaleX(0.96)}
+}
 .hero-inner{max-width:1320px;margin:0 auto;padding:0 36px;position:relative;z-index:2;display:grid;grid-template-columns:1fr 460px;gap:64px;align-items:center;width:100%}
 .hero-content{padding:72px 0}
 .hero-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(200,150,10,0.1);border:1px solid rgba(200,150,10,0.28);color:var(--amber);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:6px 15px;border-radius:30px;margin-bottom:26px}
@@ -459,9 +490,20 @@ footer{background:var(--dark);padding:72px 36px 0}
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-grid"></div>
-    <div class="hero-orb"></div>
+    <!-- Animated rice field canvas -->
+    <canvas id="rice-canvas" aria-hidden="true"></canvas>
+    <!-- Light rays -->
+    <div class="hero-rays" aria-hidden="true">
+      <div class="hero-ray"></div>
+      <div class="hero-ray"></div>
+      <div class="hero-ray"></div>
+      <div class="hero-ray"></div>
+      <div class="hero-ray"></div>
+    </div>
+    <!-- Gradient overlay -->
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <!-- Mist layer -->
+    <div class="hero-mist" aria-hidden="true"></div>
     <div class="hero-inner">
       <div class="hero-content">
         <div class="hero-pill">
@@ -1605,6 +1647,247 @@ function filterShop(cat,el){
     }
   });
 }
+</script>
+
+<!-- ===== RICE FIELD CANVAS ANIMATION ===== -->
+<script>
+(function(){
+  const canvas = document.getElementById('rice-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, stalks=[], particles=[], fireflies=[], frame=0;
+  const TAU = Math.PI*2;
+
+  /* ---- resize ---- */
+  function resize(){
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+    buildStalks();
+  }
+
+  /* ---- colour helpers ---- */
+  function hsl(h,s,l,a=1){ return `hsla(${h},${s}%,${l}%,${a})`; }
+
+  /* ---- SKY / background gradient ---- */
+  function drawSky(){
+    // Slowly animated deep-night-field sky
+    const t = frame * 0.0004;
+    const grad = ctx.createLinearGradient(0,0,0,H);
+    grad.addColorStop(0,   hsl(135, 42, 4+Math.sin(t)*1.5));
+    grad.addColorStop(0.35,hsl(138, 38, 7+Math.sin(t+1)*1));
+    grad.addColorStop(0.65,hsl(140, 35, 10));
+    grad.addColorStop(1,   hsl(145, 45, 6));
+    ctx.fillStyle = grad;
+    ctx.fillRect(0,0,W,H);
+
+    // Moon-glow at top-right
+    const moonX = W*0.82, moonY = H*0.18;
+    const moonR = ctx.createRadialGradient(moonX,moonY,0,moonX,moonY,W*0.35);
+    moonR.addColorStop(0,   'rgba(200,150,10,0.10)');
+    moonR.addColorStop(0.4, 'rgba(200,150,10,0.05)');
+    moonR.addColorStop(1,   'rgba(0,0,0,0)');
+    ctx.fillStyle = moonR;
+    ctx.fillRect(0,0,W,H);
+
+    // Ground mist band
+    const mistGrad = ctx.createLinearGradient(0, H*0.62, 0, H);
+    mistGrad.addColorStop(0, 'rgba(10,30,15,0)');
+    mistGrad.addColorStop(0.5,'rgba(10,30,15,0.22)');
+    mistGrad.addColorStop(1, 'rgba(6,15,8,0.55)');
+    ctx.fillStyle = mistGrad;
+    ctx.fillRect(0,0,W,H);
+  }
+
+  /* ---- build stalk array ---- */
+  function buildStalks(){
+    stalks = [];
+    // Density: ~1 stalk every 14px across width, 3 rows
+    const rows = [
+      { baseY: H,        count: Math.floor(W/13), heightMul:1.0, alpha:1.0,  thick:1.7 },
+      { baseY: H*0.92,   count: Math.floor(W/18), heightMul:0.7, alpha:0.55, thick:1.2 },
+      { baseY: H*0.85,   count: Math.floor(W/26), heightMul:0.5, alpha:0.28, thick:0.8 },
+    ];
+    rows.forEach(row=>{
+      for(let i=0;i<row.count;i++){
+        const x = (i/(row.count-1||1)) * W + (Math.random()-0.5)*20;
+        const h = (70 + Math.random()*55) * row.heightMul;
+        stalks.push({
+          x, baseY: row.baseY,
+          height: h,
+          // Each stalk has its own phase & frequency for natural sway
+          phase:  Math.random()*TAU,
+          freq:   0.0008 + Math.random()*0.0006,
+          amp:    6 + Math.random()*10,          // sway amplitude in px
+          alpha:  row.alpha * (0.7+Math.random()*0.3),
+          thick:  row.thick * (0.8+Math.random()*0.4),
+          hue:    108 + Math.random()*20,        // 108-128 green range
+          sat:    28  + Math.random()*22,
+          lit:    18  + Math.random()*18,
+          // Panicle (grain head) parameters
+          panicleLen: 14 + Math.random()*10,
+          grains:     Math.floor(6+Math.random()*8),
+        });
+      }
+    });
+    // Sort back-to-front (lower baseY = further back)
+    stalks.sort((a,b)=>a.baseY - b.baseY);
+
+    // Floating particles
+    particles = Array.from({length:60},()=>makeParticle());
+    fireflies = Array.from({length:18},()=>makeFirefly());
+  }
+
+  function makeParticle(){
+    return {
+      x: Math.random()*W,
+      y: H*(0.2+Math.random()*0.7),
+      r: 0.8+Math.random()*1.4,
+      alpha: 0,
+      maxAlpha: 0.12+Math.random()*0.18,
+      vx: -0.08 + Math.random()*0.16,
+      vy: -0.05 - Math.random()*0.12,
+      life: 0,
+      maxLife: 180+Math.random()*240,
+      hue: 40+Math.random()*20,
+    };
+  }
+
+  function makeFirefly(){
+    return {
+      x: W*(0.45+Math.random()*0.55),
+      y: H*(0.15+Math.random()*0.55),
+      phase: Math.random()*TAU,
+      freqX: 0.003+Math.random()*0.004,
+      freqY: 0.002+Math.random()*0.003,
+      ampX: 20+Math.random()*40,
+      ampY: 15+Math.random()*30,
+      r: 1.5+Math.random()*2,
+      baseAlpha: 0.3+Math.random()*0.5,
+      blinkFreq: 0.02+Math.random()*0.04,
+    };
+  }
+
+  /* ---- draw stalk ---- */
+  function drawStalk(s, t){
+    const sway = Math.sin(s.phase + t*s.freq*1000) * s.amp;
+    // Bezier: base → mid (sway) → tip
+    const bx = s.x, by = s.baseY;
+    const h  = s.height;
+    const mx = bx + sway*0.5, my = by - h*0.5;
+    const tx = bx + sway,     ty = by - h;
+
+    ctx.save();
+    ctx.globalAlpha = s.alpha;
+    ctx.strokeStyle = hsl(s.hue, s.sat, s.lit);
+    ctx.lineWidth = s.thick;
+    ctx.lineCap = 'round';
+
+    // Stalk curve
+    ctx.beginPath();
+    ctx.moveTo(bx, by);
+    ctx.quadraticCurveTo(mx, my, tx, ty);
+    ctx.stroke();
+
+    // Panicle (drooping grain head at tip)
+    drawPanicle(tx, ty, sway, s);
+    ctx.restore();
+  }
+
+  function drawPanicle(x, y, sway, s){
+    const pLen = s.panicleLen;
+    const droop = 0.3 + Math.abs(sway/s.amp)*0.4; // droops more in wind
+    const endX = x + sway*droop*0.4;
+    const endY = y + pLen;
+
+    // Main panicle stem
+    ctx.strokeStyle = hsl(s.hue+10, s.sat-5, s.lit+8);
+    ctx.lineWidth = s.thick*0.85;
+    ctx.beginPath();
+    ctx.moveTo(x,y);
+    ctx.quadraticCurveTo(x + sway*droop*0.2, y + pLen*0.5, endX, endY);
+    ctx.stroke();
+
+    // Individual grain dots along panicle
+    for(let g=0;g<s.grains;g++){
+      const frac = g/s.grains;
+      const gx = x + (endX-x)*frac + (Math.sin(frac*Math.PI)*3*droop);
+      const gy = y + (endY-y)*frac;
+      ctx.fillStyle = hsl(42+Math.random()*10, 55, 48+Math.random()*12);
+      ctx.beginPath();
+      ctx.ellipse(gx, gy, 1.4*s.thick, 2.2*s.thick, 0.3, 0, TAU);
+      ctx.fill();
+    }
+  }
+
+  /* ---- floating pollen particles ---- */
+  function updateParticle(p){
+    p.life++;
+    p.x += p.vx + Math.sin(frame*0.01)*0.04;
+    p.y += p.vy;
+    const frac = p.life/p.maxLife;
+    p.alpha = p.maxAlpha * Math.sin(frac*Math.PI);
+    if(p.life >= p.maxLife || p.y < -10) Object.assign(p, makeParticle(), {y:H*(0.5+Math.random()*0.4)});
+  }
+
+  function drawParticle(p){
+    ctx.save();
+    ctx.globalAlpha = p.alpha;
+    ctx.fillStyle = hsl(p.hue, 60, 70);
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, TAU);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  /* ---- fireflies ---- */
+  function drawFirefly(f, t){
+    const fx = f.x + Math.sin(f.phase + t*f.freqX*1000)*f.ampX;
+    const fy = f.y + Math.cos(f.phase + t*f.freqY*1000)*f.ampY;
+    const blink = 0.5 + 0.5*Math.sin(t*f.blinkFreq*1000 + f.phase);
+    const a = f.baseAlpha * blink;
+    if(a < 0.05) return;
+
+    // Glow halo
+    const glow = ctx.createRadialGradient(fx,fy,0,fx,fy,f.r*6);
+    glow.addColorStop(0, `rgba(180,230,80,${a*0.8})`);
+    glow.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = glow;
+    ctx.beginPath(); ctx.arc(fx,fy,f.r*6,0,TAU); ctx.fill();
+
+    // Core dot
+    ctx.fillStyle = `rgba(220,255,100,${a})`;
+    ctx.beginPath(); ctx.arc(fx,fy,f.r,0,TAU); ctx.fill();
+  }
+
+  /* ---- main loop ---- */
+  function draw(timestamp){
+    frame++;
+    const t = timestamp * 0.001; // seconds
+
+    ctx.clearRect(0,0,W,H);
+
+    drawSky();
+
+    // Particles behind stalks
+    particles.forEach(p=>{ updateParticle(p); drawParticle(p); });
+
+    // Draw stalks back-to-front
+    stalks.forEach(s=> drawStalk(s,t));
+
+    // Fireflies in front
+    fireflies.forEach(f=> drawFirefly(f,t));
+
+    requestAnimationFrame(draw);
+  }
+
+  /* ---- init ---- */
+  resize();
+  window.addEventListener('resize', ()=>{
+    clearTimeout(window._rcResize);
+    window._rcResize = setTimeout(resize, 200);
+  });
+  requestAnimationFrame(draw);
+})();
 </script>
 </body>
 </html>

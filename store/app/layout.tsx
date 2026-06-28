@@ -4,6 +4,7 @@ import "./globals.css"
 import { Navbar } from "@/components/layout/Navbar"
 import { CartDrawer } from "@/components/layout/CartDrawer"
 import { Footer } from "@/components/layout/Footer"
+import { ChatBot } from "@/components/layout/ChatBot"
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <CartDrawer />
         <main className="flex-1 pt-[68px]">{children}</main>
         <Footer />
+        <ChatBot />
       </body>
     </html>
   )

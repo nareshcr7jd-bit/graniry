@@ -1,12 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import { PRODUCTS } from "@/lib/products"
-import { formatPrice } from "@/lib/utils"
+import Image from "next/image"
 
 export function HeroSection() {
-  const featured = PRODUCTS.filter(p => p.featured).slice(0, 4)
-
   return (
     <section
       style={{
@@ -18,45 +15,52 @@ export function HeroSection() {
         overflow: "hidden",
       }}
     >
-      {/* Background effects */}
+      {/* Background video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          zIndex: 0,
+        }}
+      >
+        <source src="/hero-bg.mp4" type="video/mp4" />
+      </video>
+
+      {/* Dark overlay for text readability */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "rgba(8,28,14,0.62)",
+          zIndex: 1,
+        }}
+      />
+      {/* Gold accent glow */}
       <div
         style={{
           position: "absolute",
           inset: 0,
           background:
-            "radial-gradient(ellipse 60% 70% at 70% 40%, rgba(28,92,46,0.22) 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 15% 75%, rgba(200,150,10,0.07) 0%, transparent 60%)",
+            "radial-gradient(ellipse 40% 40% at 15% 75%, rgba(200,150,10,0.07) 0%, transparent 60%)",
+          zIndex: 1,
         }}
       />
-      <div className="grid-overlay" style={{ position: "absolute", inset: 0, opacity: 0.6 }} />
+      <div className="grid-overlay" style={{ position: "absolute", inset: 0, opacity: 0.3, zIndex: 1 }} />
 
       <div
-        style={{ maxWidth: 1320, margin: "0 auto", padding: "80px 24px", position: "relative", zIndex: 2, width: "100%" }}
+        style={{ maxWidth: 1320, margin: "0 auto", padding: "0px 24px", position: "relative", zIndex: 2, width: "100%" }}
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left: copy */}
           <div className="animate-fade-up">
-            {/* Live pill */}
-            <div
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                background: "rgba(200,150,10,0.1)",
-                border: "1px solid rgba(200,150,10,0.28)",
-                color: "var(--amber)",
-                fontSize: 11,
-                fontWeight: 600,
-                letterSpacing: "0.14em",
-                textTransform: "uppercase",
-                padding: "6px 14px",
-                borderRadius: 30,
-                marginBottom: 28,
-              }}
-            >
-              <span className="animate-pulse-dot" style={{ width: 5, height: 5, borderRadius: "50%", background: "var(--amber)", display: "inline-block" }} />
-              Bangalore Delivery · Available Now
-            </div>
-
             <h1
               className="font-display"
               style={{
@@ -183,127 +187,26 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Right: product preview card */}
+          {/* Right: packaging lineup image */}
           <div
-            style={{
-              background: "rgba(255,255,255,0.04)",
-              border: "1px solid rgba(255,255,255,0.09)",
-              borderRadius: 20,
-              padding: 24,
-              backdropFilter: "blur(12px)",
-            }}
+            className="flex items-center justify-center"
+            style={{ position: "relative" }}
           >
-            <p
+            <Image
+              src="/packaging-lineup.png"
+              alt="Grainary premium rice packaging lineup"
+              width={560}
+              height={560}
               style={{
-                fontSize: 10,
-                fontWeight: 600,
-                letterSpacing: "0.14em",
-                textTransform: "uppercase",
-                color: "rgba(200,150,10,0.7)",
-                marginBottom: 18,
+                width: "100%",
+                maxWidth: 560,
+                height: "auto",
+                objectFit: "contain",
+                filter: "drop-shadow(0 32px 64px rgba(0,0,0,0.5))",
+                willChange: "transform",
               }}
-            >
-              Our Products
-            </p>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {featured.map(product => (
-                <Link
-                  key={product.id}
-                  href={`/products/${product.slug}`}
-                  style={{ textDecoration: "none" }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      padding: "14px 16px",
-                      background: "rgba(255,255,255,0.04)",
-                      border: "1px solid rgba(255,255,255,0.06)",
-                      borderRadius: 12,
-                      cursor: "pointer",
-                      transition: "transform 0.2s var(--ease-out)",
-                    }}
-                    onMouseEnter={e => {
-                      (e.currentTarget as HTMLElement).style.transform = "translateX(4px)"
-                    }}
-                    onMouseLeave={e => {
-                      (e.currentTarget as HTMLElement).style.transform = "translateX(0)"
-                    }}
-                  >
-                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <div
-                        style={{
-                          width: 38,
-                          height: 38,
-                          borderRadius: 9,
-                          background: product.bagGradient,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          fontSize: 16,
-                          flexShrink: 0,
-                        }}
-                      >
-                        {product.emoji}
-                      </div>
-                      <div>
-                        <p style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.88)" }}>
-                          {product.shortName}
-                        </p>
-                        <p style={{ fontSize: 10, color: "rgba(255,255,255,0.38)", marginTop: 2 }}>
-                          {product.aging ? `Aged ${product.aging}` : product.tagline.split(" · ")[0]}
-                        </p>
-                        <span
-                          style={{
-                            display: "inline-block",
-                            fontSize: 9,
-                            fontWeight: 700,
-                            letterSpacing: "0.08em",
-                            textTransform: "uppercase",
-                            padding: "2px 7px",
-                            borderRadius: 4,
-                            marginTop: 4,
-                            background: "rgba(200,150,10,0.18)",
-                            color: "var(--amber)",
-                          }}
-                        >
-                          {product.badges[0]}
-                        </span>
-                      </div>
-                    </div>
-                    <div style={{ textAlign: "right" }}>
-                      <div
-                        className="font-display"
-                        style={{ fontSize: 18, fontWeight: 700, color: "var(--amber)" }}
-                      >
-                        {formatPrice(product.pricePerKg)}
-                      </div>
-                      <div style={{ fontSize: 9, color: "rgba(255,255,255,0.3)", marginTop: 2 }}>
-                        per kg
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-
-            <Link
-              href="/products"
-              style={{
-                display: "block",
-                marginTop: 14,
-                textAlign: "center",
-                color: "rgba(200,150,10,0.7)",
-                fontSize: 12,
-                fontWeight: 600,
-                textDecoration: "none",
-                letterSpacing: "0.04em",
-              }}
-            >
-              View all 8 products →
-            </Link>
+              priority
+            />
           </div>
         </div>
       </div>

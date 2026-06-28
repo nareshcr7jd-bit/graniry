@@ -1,69 +1,31 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { useEffect, useState } from "react"
 import { useCartStore } from "@/lib/store/cart"
 
 function GrainaryLogo() {
   return (
-    <Link href="/" className="flex items-center gap-3 cursor-pointer no-underline">
-      {/* SVG logo mark */}
-      <div
-        className="flex items-center justify-center flex-shrink-0 rounded-[10px]"
-        style={{
-          width: 40,
-          height: 40,
-          background: "linear-gradient(135deg, #C8960A, #E8A800)",
-          boxShadow: "0 0 18px rgba(200,150,10,0.35)",
-        }}
-      >
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-          {/* Three rice grains */}
-          <ellipse cx="11" cy="5.5" rx="3.5" ry="4.8" fill="#0D2E1A" />
-          <ellipse
-            cx="6.5" cy="14"
-            rx="3" ry="4.2"
-            transform="rotate(-22 6.5 14)"
-            fill="#0D2E1A"
-          />
-          <ellipse
-            cx="15.5" cy="14"
-            rx="3" ry="4.2"
-            transform="rotate(22 15.5 14)"
-            fill="#0D2E1A"
-          />
-        </svg>
-      </div>
-      {/* Word mark */}
-      <div className="flex flex-col leading-none">
-        <span
-          className="font-display text-white"
-          style={{ fontSize: 22, fontWeight: 700, letterSpacing: "0.06em" }}
-        >
-          GRAINARY
-        </span>
-        <span
-          style={{
-            fontSize: 8,
-            color: "rgba(200,150,10,0.72)",
-            letterSpacing: "0.2em",
-            textTransform: "uppercase",
-            marginTop: 2,
-            fontFamily: "var(--font-inter), Inter, sans-serif",
-          }}
-        >
-          South India&apos;s Premium Rice
-        </span>
-      </div>
+    <Link href="/" className="flex items-center cursor-pointer no-underline">
+      <Image
+        src="/logo-dark.png"
+        alt="Grainary — South India's Premium Rice"
+        width={58}
+        height={52}
+        style={{ display: "block" }}
+        priority
+      />
     </Link>
   )
 }
 
 const NAV_LINKS = [
+  { label: "Home", href: "/" },
   { label: "Products", href: "/products" },
   { label: "Health Science", href: "/#health" },
   { label: "Packaging", href: "/packaging" },
-  { label: "Subscribe", href: "/#subscribe" },
+  { label: "Blog", href: "/blog" },
 ]
 
 function CartIcon() {
