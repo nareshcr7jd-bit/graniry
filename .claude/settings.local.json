@@ -13,7 +13,11 @@
       "Bash(cd \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\" && npm run lint 2>&1)",
       "Bash(cd \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\" && npm run build 2>&1)",
       "Bash(cd \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\" && npm run lint 2>&1 && echo \"LINT OK\" && npm run build 2>&1)",
-      "Bash(cd \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\" && npm install drizzle-orm pg dotenv && npm install -D drizzle-kit @types/pg 2>&1)"
+      "Bash(cd \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\" && npm install drizzle-orm pg dotenv && npm install -D drizzle-kit @types/pg 2>&1)",
+      "Bash(cd \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\" && npx drizzle-kit generate 2>&1)",
+      "Bash(cd \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\" && npx drizzle-kit migrate 2>&1)",
+      "Bash(cd \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\" && npm install -D tsx 2>&1 | tail -3 && npx tsx lib/db/seed.ts 2>&1)",
+      "Bash(cd \"C:\\\\Users\\\\Ravi Desai\\\\Downloads\\\\graniry\\\\graniry\\\\store\" && npx drizzle-kit push 2>&1)"
     ]
   }
 }
