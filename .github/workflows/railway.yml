@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'store/**'
 
 jobs:
   deploy:
@@ -14,18 +12,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: store/package-lock.json
-
       - name: Install Railway CLI
         run: npm install -g @railway/cli
 
       - name: Deploy to Railway
-        working-directory: store
-        run: railway up --service=${{ secrets.RAILWAY_SERVICE_NAME }} --detach
+        run: railway up --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
