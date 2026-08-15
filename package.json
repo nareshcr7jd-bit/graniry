@@ -6,7 +6,9 @@
     "node": ">=20"
   },
   "scripts": {
+    "dev": "cd store && npm run dev",
     "build": "cd store && npm install && npm run build",
-    "start": "cd store && npm start"
+    "start": "cd store && npm start",
+    "lint": "cd store && npm run lint"
   }
 }
