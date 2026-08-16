@@ -1,48 +1,65 @@
-const ITEMS = [
-  { icon: "🌾", text: "Aged Sona Masoori" },
-  { icon: "📊", text: "Glycemic Index: 54" },
-  { icon: "💪", text: "8.9g Protein per 100g" },
-  { icon: "🏺", text: "Ancient Red Rice" },
-  { icon: "🥗", text: "Diet-Safe · Low Starch" },
-  { icon: "🚚", text: "Bangalore Delivery" },
-  { icon: "🔬", text: "Batch-Tested Quality" },
-  { icon: "🌱", text: "Farm Direct" },
-  { icon: "♾️", text: "No Preservatives" },
-  { icon: "⭐", text: "Restaurant Grade" },
-]
+"use client"
+
+import { useLanguageStore } from "@/lib/store/language"
+import { TRANSLATIONS } from "@/lib/translations"
 
 export function TickerBar() {
-  // Duplicate for seamless loop
-  const doubled = [...ITEMS, ...ITEMS]
+  const { language } = useLanguageStore()
+  const t = TRANSLATIONS[language]?.ticker || TRANSLATIONS.en.ticker
+
+  const items = [
+    t.item1,
+    t.item2,
+    t.item3,
+    t.item4,
+    t.item5,
+  ]
+
+  const doubled = [...items, ...items]
 
   return (
     <div
       style={{
-        background: "var(--gold)",
-        padding: "13px 0",
+        background: "#081A0D",
+        borderTop: "1px solid rgba(200,150,10,0.18)",
+        borderBottom: "1px solid rgba(200,150,10,0.18)",
         overflow: "hidden",
+        padding: "13px 0",
+        userSelect: "none",
       }}
     >
-      <div className="animate-ticker" style={{ display: "flex", gap: 0, width: "max-content" }}>
-        {doubled.map((item, i) => (
+      <div
+        className="animate-ticker"
+        style={{
+          display: "flex",
+          whiteSpace: "nowrap",
+          width: "max-content",
+        }}
+      >
+        {doubled.map((item, index) => (
           <div
-            key={i}
+            key={index}
             style={{
-              display: "flex",
+              display: "inline-flex",
               alignItems: "center",
-              gap: 8,
-              fontSize: 11,
-              fontWeight: 700,
-              color: "var(--forest)",
+              fontSize: 12,
+              fontWeight: 600,
+              color: "rgba(255,255,255,0.72)",
               letterSpacing: "0.06em",
               textTransform: "uppercase",
-              padding: "0 32px",
-              flexShrink: 0,
-              borderRight: "1px solid rgba(13,46,26,0.14)",
+              paddingRight: 40,
             }}
           >
-            <span>{item.icon}</span>
-            <span>{item.text}</span>
+            <span>{item}</span>
+            <span
+              style={{
+                color: "var(--gold)",
+                margin: "0 0 0 40px",
+                fontSize: 10,
+              }}
+            >
+              ✦
+            </span>
           </div>
         ))}
       </div>

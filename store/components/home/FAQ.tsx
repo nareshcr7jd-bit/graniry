@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { useLanguageStore } from "@/lib/store/language"
+import { TRANSLATIONS } from "@/lib/translations"
 
 const FAQS = [
   {
@@ -56,15 +58,25 @@ const FAQS = [
 ]
 
 export function FAQ() {
-  const [open, setOpen] = useState<number | null>(null)
-  const [search, setSearch] = useState("")
-  const [activeCategory, setActiveCategory] = useState<string>("all")
+  const [openIndex, setOpenIndex] = useState<number | null>(0)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [activeCategory, setActiveCategory] = useState<"all" | "aging" | "gi" | "delivery" | "cooking">("all")
+  const { language } = useLanguageStore()
+  const t = TRANSLATIONS[language]?.faq || TRANSLATIONS.en.faq
 
-  const filteredFaqs = FAQS.filter((faq) => {
+  const categories: { label: string; value: "all" | "aging" | "gi" | "delivery" | "cooking" }[] = [
+    { label: language === 'kn' ? "ಎಲ್ಲಾ ಪ್ರಶ್ನೆಗಳು" : "All FAQs", value: "all" },
+    { label: language === 'kn' ? "ಹಳೆಯ ಅಕ್ಕಿ" : "Aging Process", value: "aging" },
+    { label: language === 'kn' ? "ಗ್ಲೈಸೆಮಿಕ್ (GI)" : "GI & Diabetes", value: "gi" },
+    { label: language === 'kn' ? "ಡೆಲಿವರಿ" : "Delivery", value: "delivery" },
+    { label: language === 'kn' ? "ಅಡುಗೆ" : "Cooking", value: "cooking" },
+  ]
+
+  const filteredFAQS = FAQS.filter((item) => {
     const matchesSearch =
-      faq.q.toLowerCase().includes(search.toLowerCase()) ||
-      faq.a.toLowerCase().includes(search.toLowerCase())
-    const matchesCat = activeCategory === "all" || faq.category === activeCategory
+      item.q.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.a.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesCat = activeCategory === "all" || item.category === activeCategory
     return matchesSearch && matchesCat
   })
 
@@ -74,45 +86,44 @@ export function FAQ() {
       className="section-padding"
       style={{ background: "var(--cream)" }}
     >
-      <div style={{ maxWidth: 800, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: 40 }}>
-          <p className="eyebrow" style={{ marginBottom: 12 }}>FAQ</p>
+      <div style={{ maxWidth: 860, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: 36 }}>
+          <p className="eyebrow" style={{ marginBottom: 12 }}>{t.eyebrow}</p>
           <h2
             className="font-display"
             style={{
               fontSize: "clamp(30px, 5vw, 44px)",
               fontWeight: 800,
-              color: "#111",
+              color: "var(--g-dark, #111)",
               lineHeight: 1.12,
               marginBottom: 16,
             }}
           >
-            Common questions
+            {t.title}
           </h2>
 
-          {/* Search Input */}
-          <div className="max-w-md mx-auto relative mt-6">
+          {/* Search bar */}
+          <div className="relative max-w-md mx-auto mb-6">
             <input
               type="text"
-              placeholder="Search questions (e.g. GI index, delivery, diabetes)..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full px-4 py-3 pl-10 rounded-xl bg-white border border-gray-300 text-xs text-gray-900 outline-none focus:border-amber-600 shadow-sm"
+              placeholder={t.searchPlaceholder}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full px-4 py-3 pl-10 text-xs font-medium rounded-xl bg-white border border-gray-300 outline-none focus:border-emerald-800 shadow-sm"
             />
-            <svg className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
 
           {/* Category Filter Pills */}
           <div className="flex justify-center gap-2 mt-4 flex-wrap">
-            {[
-              { label: "All Questions", value: "all" },
-              { label: "Health & GI", value: "health" },
-              { label: "Orders & Delivery", value: "orders" },
-              { label: "Cooking & Varieties", value: "cooking" },
-              { label: "B2B / Wholesale", value: "wholesale" },
-            ].map((cat) => (
+            {categories.map((cat) => (
               <button
                 key={cat.value}
                 onClick={() => setActiveCategory(cat.value)}
@@ -129,13 +140,13 @@ export function FAQ() {
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-          {filteredFaqs.length === 0 ? (
+          {filteredFAQS.length === 0 ? (
             <div className="py-12 text-center text-gray-500">
-              <p className="font-display text-base">No questions found matching "{search}"</p>
+              <p className="font-display text-base">No questions found matching "{searchQuery}"</p>
               <p className="text-xs mt-1">Try searching for "aging", "GI", "delivery", or "diabetic".</p>
             </div>
           ) : (
-            filteredFaqs.map((faq, i) => (
+            filteredFAQS.map((faq, i) => (
               <div
                 key={i}
                 style={{
@@ -143,7 +154,7 @@ export function FAQ() {
                 }}
               >
                 <button
-                  onClick={() => setOpen(open === i ? null : i)}
+                  onClick={() => setOpenIndex(openIndex === i ? null : i)}
                   style={{
                     width: "100%",
                     display: "flex",
@@ -174,7 +185,7 @@ export function FAQ() {
                       fontSize: 20,
                       color: "var(--gold)",
                       transition: "transform 0.2s",
-                      transform: open === i ? "rotate(45deg)" : "rotate(0)",
+                      transform: openIndex === i ? "rotate(45deg)" : "rotate(0)",
                       flexShrink: 0,
                       width: 24,
                       height: 24,
@@ -186,7 +197,7 @@ export function FAQ() {
                     +
                   </span>
                 </button>
-                {open === i && (
+                {openIndex === i && (
                   <div style={{ paddingBottom: 20 }}>
                     <p style={{ fontSize: 14, color: "#555", lineHeight: 1.85 }}>{faq.a}</p>
                   </div>

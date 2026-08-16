@@ -5,21 +5,25 @@ import Link from "next/link"
 import { PRODUCTS, ProductCategory } from "@/lib/products"
 import { ProductCard } from "@/components/product/ProductCard"
 import { ProductComparisonModal } from "@/components/product/ProductComparisonModal"
+import { useLanguageStore } from "@/lib/store/language"
+import { TRANSLATIONS } from "@/lib/translations"
 
 type Filter = "all" | ProductCategory
-
-const FILTERS: { label: string; value: Filter }[] = [
-  { label: "All Products", value: "all" },
-  { label: "Diet & Health", value: "diet" },
-  { label: "Everyday", value: "everyday" },
-  { label: "Premium", value: "premium" },
-  { label: "Multigrain", value: "multigrain" },
-  { label: "Ancient Grains", value: "ancient" },
-]
 
 export function ProductShowcase() {
   const [active, setActive] = useState<Filter>("all")
   const [isCompareOpen, setIsCompareOpen] = useState(false)
+  const { language } = useLanguageStore()
+  const t = TRANSLATIONS[language]?.showcase || TRANSLATIONS.en.showcase
+
+  const filters: { label: string; value: Filter }[] = [
+    { label: language === 'kn' ? "ಎಲ್ಲಾ ಅಕ್ಕಿ ತಳಿಗಳು" : "All Products", value: "all" },
+    { label: language === 'kn' ? "ಆರೋಗ್ಯ ಮತ್ತು ಡಯಟ್" : "Diet & Health", value: "diet" },
+    { label: language === 'kn' ? "ದೈನಂದಿನ ಬಳಕೆ" : "Everyday", value: "everyday" },
+    { label: language === 'kn' ? "ಪ್ರೀಮಿಯಂ ತಳಿ" : "Premium", value: "premium" },
+    { label: language === 'kn' ? "ಮಲ್ಟಿಗ್ರೇನ್" : "Multigrain", value: "multigrain" },
+    { label: language === 'kn' ? "ಪ್ರಾಚೀನ ಅಕ್ಕಿ" : "Ancient Grains", value: "ancient" },
+  ]
 
   const filtered = active === "all" ? PRODUCTS : PRODUCTS.filter(p => p.category === active)
 
@@ -37,7 +41,7 @@ export function ProductShowcase() {
             style={{ marginBottom: 40 }}
           >
             <div>
-              <p className="eyebrow" style={{ marginBottom: 10 }}>Our Products</p>
+              <p className="eyebrow" style={{ marginBottom: 10 }}>{t.eyebrow}</p>
               <h2
                 className="font-display"
                 style={{
@@ -48,11 +52,11 @@ export function ProductShowcase() {
                   marginBottom: 10,
                 }}
               >
-                Eight varieties.{" "}
-                <em style={{ color: "var(--moss)", fontStyle: "italic" }}>One story.</em>
+                {t.titleStart}{" "}
+                <em style={{ color: "var(--moss)", fontStyle: "italic" }}>{t.titleAccent}</em>
               </h2>
               <p style={{ fontSize: 15, color: "var(--g-mid, #555)", maxWidth: 480, lineHeight: 1.7 }}>
-                From everyday Sona Masoori to ancient Kavuni red rice — every variety aged, tested, and honest.
+                {t.subtitle}
               </p>
             </div>
 
@@ -61,7 +65,7 @@ export function ProductShowcase() {
                 onClick={() => setIsCompareOpen(true)}
                 className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-emerald-950 text-amber-300 font-display font-bold text-xs hover:bg-emerald-900 transition-colors shadow-md cursor-pointer"
               >
-                <span>⚖️ Compare Varieties Matrix</span>
+                <span>{t.compareBtn}</span>
               </button>
 
               <Link
@@ -78,7 +82,7 @@ export function ProductShowcase() {
                   display: "inline-block",
                 }}
               >
-                View All →
+                {t.viewAll}
               </Link>
             </div>
           </div>
@@ -88,7 +92,7 @@ export function ProductShowcase() {
             className="flex gap-2 overflow-x-auto scrollbar-none pb-2"
             style={{ marginBottom: 36 }}
           >
-            {FILTERS.map(f => {
+            {filters.map(f => {
               const count = f.value === "all" ? PRODUCTS.length : PRODUCTS.filter(p => p.category === f.value).length
               return (
                 <button

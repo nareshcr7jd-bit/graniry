@@ -4,6 +4,8 @@ import { useState } from "react"
 import Link from "next/link"
 import { Product, PACK_SIZES } from "@/lib/products"
 import { useCartStore } from "@/lib/store/cart"
+import { useLanguageStore } from "@/lib/store/language"
+import { TRANSLATIONS } from "@/lib/translations"
 import { formatPrice, calcPrice } from "@/lib/utils"
 import { BagMockup } from "./BagMockup"
 import { ProductQuickView } from "./ProductQuickView"
@@ -63,6 +65,8 @@ export function ProductCard({ product, featured }: ProductCardProps) {
   const [added, setAdded] = useState(false)
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false)
   const { addItem } = useCartStore()
+  const { language } = useLanguageStore()
+  const t = TRANSLATIONS[language]?.showcase || TRANSLATIONS.en.showcase
 
   const price = calcPrice(product.pricePerKg, selectedSize)
   const isBestValue = selectedSize >= 10
@@ -121,7 +125,7 @@ export function ProductCard({ product, featured }: ProductCardProps) {
               }}
               className="absolute z-20 px-3 py-1.5 rounded-full bg-black/60 hover:bg-black/80 text-white font-semibold text-xs opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-lg backdrop-blur-sm transform translate-y-2 group-hover:translate-y-0"
             >
-              👁 Quick View
+              {t.quickView}
             </button>
 
             {/* Centered bag mockup */}
@@ -252,7 +256,7 @@ export function ProductCard({ product, featured }: ProductCardProps) {
                       textTransform: "uppercase",
                     }}
                   >
-                    Best Value
+                    {t.bestValue}
                   </span>
                 )}
               </div>
@@ -278,7 +282,7 @@ export function ProductCard({ product, featured }: ProductCardProps) {
                 flexShrink: 0,
               }}
             >
-              {added ? "✓ Added" : "Add to Cart"}
+              {added ? "✓ Added" : t.addToCart}
             </button>
           </div>
         </div>

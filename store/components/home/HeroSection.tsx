@@ -2,8 +2,13 @@
 
 import Link from "next/link"
 import Image from "next/image"
+import { useLanguageStore } from "@/lib/store/language"
+import { TRANSLATIONS } from "@/lib/translations"
 
 export function HeroSection() {
+  const { language } = useLanguageStore()
+  const t = TRANSLATIONS[language]?.hero || TRANSLATIONS.en.hero
+
   return (
     <section
       style={{
@@ -58,13 +63,14 @@ export function HeroSection() {
       <div
         style={{ maxWidth: 1320, margin: "0 auto", padding: "0px 24px", position: "relative", zIndex: 2, width: "100%" }}
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pt-8">
           {/* Left: copy */}
           <div className="animate-fade-up">
+            <span className="text-amber-400 text-xs font-bold uppercase tracking-widest block mb-2">{t.eyebrow}</span>
             <h1
               className="font-display"
               style={{
-                fontSize: "clamp(48px, 7vw, 72px)",
+                fontSize: "clamp(44px, 6.5vw, 68px)",
                 fontWeight: 900,
                 color: "white",
                 lineHeight: 1.04,
@@ -72,37 +78,35 @@ export function HeroSection() {
                 letterSpacing: "-0.01em",
               }}
             >
-              Eat Rice.{" "}
-              <em style={{ fontStyle: "italic", color: "var(--amber)" }}>Stay Fit.</em>
+              {t.titleStart}{" "}
+              <em style={{ fontStyle: "italic", color: "var(--amber)" }}>{t.titleAccent}</em>{" "}
+              {t.titleEnd}
             </h1>
 
             <p
               style={{
                 fontSize: 16,
-                color: "rgba(255,255,255,0.58)",
+                color: "rgba(255,255,255,0.72)",
                 lineHeight: 1.85,
                 maxWidth: 480,
                 marginBottom: 16,
               }}
             >
-              South India&apos;s first premium rice brand with a health story. Our aged Sona Masoori
-              has a{" "}
-              <strong style={{ color: "rgba(255,255,255,0.82)" }}>Glycemic Index of 54</strong> — 25%
-              lower than regular rice. Eat it on your diet.
+              {t.description}
             </p>
             <p
               style={{
-                fontSize: 14,
-                color: "rgba(255,255,255,0.4)",
+                fontSize: 13,
+                color: "rgba(255,255,255,0.45)",
                 lineHeight: 1.7,
                 maxWidth: 460,
-                marginBottom: 40,
+                marginBottom: 36,
               }}
             >
               Farm-direct · Aged 12–24 months · Batch-tested · Bangalore delivery
             </p>
 
-            <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 56 }}>
+            <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 48 }}>
               <Link
                 href="/products"
                 style={{
@@ -119,24 +123,28 @@ export function HeroSection() {
                   minHeight: 52,
                 }}
               >
-                Shop Now
+                {t.exploreProducts}
               </Link>
               <a
-                href="#health"
+                href="https://wa.me/919900000000?text=Hi%20Grainary!%20I%20want%20to%20place%20an%20order."
+                target="_blank"
+                rel="noopener noreferrer"
                 style={{
-                  background: "transparent",
-                  color: "rgba(255,255,255,0.78)",
+                  background: "rgba(37,211,102,0.15)",
+                  color: "#4ade80",
                   fontSize: 15,
-                  fontWeight: 500,
-                  padding: "15px 32px",
+                  fontWeight: 600,
+                  padding: "15px 28px",
                   borderRadius: 9,
-                  border: "1.5px solid rgba(255,255,255,0.2)",
+                  border: "1.5px solid rgba(37,211,102,0.3)",
                   textDecoration: "none",
-                  display: "inline-block",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
                   minHeight: 52,
                 }}
               >
-                The Science →
+                {t.whatsappOrder}
               </a>
             </div>
 
@@ -147,7 +155,7 @@ export function HeroSection() {
                 flexWrap: "wrap",
                 gap: "16px 0",
                 borderTop: "1px solid rgba(255,255,255,0.07)",
-                paddingTop: 28,
+                paddingTop: 24,
               }}
             >
               {[
@@ -167,15 +175,15 @@ export function HeroSection() {
                 >
                   <div
                     className="font-display"
-                    style={{ fontSize: 24, fontWeight: 700, color: "var(--amber)", lineHeight: 1 }}
+                    style={{ fontSize: 22, fontWeight: 700, color: "var(--amber)", lineHeight: 1 }}
                   >
                     {s.val}
                   </div>
                   <div
                     style={{
                       fontSize: 10,
-                      color: "rgba(255,255,255,0.38)",
-                      marginTop: 5,
+                      color: "rgba(255,255,255,0.4)",
+                      marginTop: 4,
                       letterSpacing: "0.07em",
                       textTransform: "uppercase",
                     }}

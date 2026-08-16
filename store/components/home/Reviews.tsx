@@ -2,6 +2,8 @@
 
 import { useState } from "react"
 import { useToastStore } from "@/lib/store/toast"
+import { useLanguageStore } from "@/lib/store/language"
+import { TRANSLATIONS } from "@/lib/translations"
 
 interface Review {
   stars: number
@@ -84,6 +86,8 @@ export function Reviews() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [newReview, setNewReview] = useState({ name: "", location: "", text: "", product: "Diet Rice — Low GI", stars: 5 })
   const { addToast } = useToastStore()
+  const { language } = useLanguageStore()
+  const t = TRANSLATIONS[language]?.reviews || TRANSLATIONS.en.reviews
 
   const filteredReviews = filter === "all" ? reviewsList : reviewsList.filter((r) => r.category === filter)
 
@@ -116,7 +120,7 @@ export function Reviews() {
       <div style={{ maxWidth: 1320, margin: "0 auto" }}>
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
-            <p className="eyebrow" style={{ marginBottom: 12 }}>Customer Reviews</p>
+            <p className="eyebrow" style={{ marginBottom: 12 }}>{t.eyebrow}</p>
             <h2
               className="font-display"
               style={{
@@ -127,11 +131,11 @@ export function Reviews() {
                 marginBottom: 10,
               }}
             >
-              What Bangalore is{" "}
-              <em style={{ color: "var(--amber)", fontStyle: "italic" }}>saying</em>
+              {t.titleStart}{" "}
+              <em style={{ color: "var(--amber)", fontStyle: "italic" }}>{t.titleAccent}</em>
             </h2>
             <p style={{ fontSize: 15, color: "rgba(255,255,255,0.6)", maxWidth: 440 }}>
-              Real customers. Real health benefits. Batch-tested purity.
+              {t.subtitle}
             </p>
           </div>
 
@@ -139,7 +143,7 @@ export function Reviews() {
             onClick={() => setIsModalOpen(true)}
             className="px-5 py-3 rounded-xl bg-amber-400 text-emerald-950 font-display font-bold text-xs hover:bg-amber-300 transition-all shadow-lg shrink-0"
           >
-            + Write a Review
+            {t.writeReview}
           </button>
         </div>
 

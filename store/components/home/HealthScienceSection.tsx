@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { useLanguageStore } from "@/lib/store/language"
+import { TRANSLATIONS } from "@/lib/translations"
 
 const COOKING_PRESETS: Record<
   string,
@@ -17,10 +19,10 @@ export function HealthScienceSection() {
   const [dailyGrams, setDailyGrams] = useState<number>(200)
   const [selectedRiceType, setSelectedRiceType] = useState<string>("Aged Sona Masoori")
   const [portionCups, setPortionCups] = useState<number>(2)
+  const { language } = useLanguageStore()
+  const t = TRANSLATIONS[language]?.health || TRANSLATIONS.en.health
 
   // Calculations:
-  // Glycemic Load (GL) = (GI * carbs_per_serving) / 100
-  // Carbs approx 28g per 100g cooked rice
   const carbsPerServing = (dailyGrams / 100) * 28
   const regularGL = Math.round((72 * carbsPerServing) / 100)
   const grainaryGL = Math.round((54 * carbsPerServing) / 100)

@@ -1,28 +1,25 @@
 'use client'
 
-import { useState } from 'react'
+import { useLanguageStore } from '@/lib/store/language'
+import { useEffect, useState } from 'react'
 
 export function KannadaToggle() {
-  const [lang, setLang] = useState<'en' | 'kn'>('en')
+  const { language, toggleLanguage } = useLanguageStore()
+  const [mounted, setMounted] = useState(false)
 
-  const toggleLanguage = () => {
-    const nextLang = lang === 'en' ? 'kn' : 'en'
-    setLang(nextLang)
-    if (typeof window !== 'undefined') {
-      const tag = document.getElementById('kannada-banner')
-      if (tag) {
-        tag.style.display = nextLang === 'kn' ? 'block' : 'none'
-      }
-    }
-  }
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) return null
 
   return (
     <button
       onClick={toggleLanguage}
-      className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 text-white text-xs font-semibold border border-white/15 transition-all cursor-pointer"
+      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-emerald-950 text-xs font-bold transition-all cursor-pointer shadow-sm border border-amber-500"
       title="Switch Language / ಭಾಷೆಯನ್ನು ಬದಲಾಯಿಸಿ"
     >
-      <span className="text-amber-300 font-bold">{lang === 'en' ? 'ಕನ್ನಡ' : 'English'}</span>
+      <span>{language === 'en' ? 'ಕನ್ನಡ' : 'English'}</span>
     </button>
   )
 }
