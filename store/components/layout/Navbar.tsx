@@ -11,15 +11,20 @@ import { KannadaToggle } from "./KannadaToggle"
 
 function GrainaryLogo() {
   return (
-    <Link href="/" className="flex items-center cursor-pointer no-underline">
+    <Link href="/" className="flex items-center gap-2 cursor-pointer no-underline">
       <Image
         src="/logo-dark.png"
-        alt="Grainary — South India's Premium Rice"
+        alt="Grainary by JDP Enterprises — South India's Premium Rice"
         width={58}
         height={52}
         style={{ display: "block" }}
         priority
       />
+      <div className="hidden lg:block">
+        <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest block leading-none">
+          JDP Enterprises
+        </span>
+      </div>
     </Link>
   )
 }

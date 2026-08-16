@@ -12,7 +12,7 @@ export function Footer() {
       >
         {/* Brand col */}
         <div className="md:col-span-1">
-          <div className="flex items-center gap-3 mb-4">
+          <div className="flex items-center gap-3 mb-2">
             <div
               className="flex items-center justify-center rounded-[9px] flex-shrink-0"
               style={{
@@ -23,21 +23,26 @@ export function Footer() {
               <svg width="18" height="18" viewBox="0 0 22 22" fill="none">
                 <ellipse cx="11" cy="5.5" rx="3.5" ry="4.8" fill="#0D2E1A" />
                 <ellipse cx="6.5" cy="14" rx="3" ry="4.2" transform="rotate(-22 6.5 14)" fill="#0D2E1A" />
-                <ellipse cx="15.5" cy="14" rx="3" ry="4.2" transform="rotate(22 15.5 14)" fill="#0D2E1A" />
+                <ellipse cx="15.5" cy="15" rx="3" ry="4.2" transform="rotate(22 15.5 14)" fill="#0D2E1A" />
               </svg>
             </div>
-            <span className="font-display text-white" style={{ fontSize: 20, fontWeight: 700, letterSpacing: "0.06em" }}>
-              GRAINARY
-            </span>
+            <div>
+              <span className="font-display text-white block" style={{ fontSize: 20, fontWeight: 700, letterSpacing: "0.06em", lineHeight: 1 }}>
+                GRAINARY
+              </span>
+              <span className="text-[10px] text-amber-400/80 font-bold uppercase tracking-wider block mt-0.5">
+                A Brand by JDP Enterprises
+              </span>
+            </div>
           </div>
-          <p style={{ fontSize: 13, lineHeight: 1.8, marginBottom: 20 }}>
-            South India&apos;s first premium rice brand with a health story. Farm to your kitchen — 18-month aged, low GI, NABL lab tested.
+          <p style={{ fontSize: 13, lineHeight: 1.8, marginBottom: 16 }}>
+            South India&apos;s first premium rice brand with a health story. Marketed & managed by <strong>JDP Enterprises</strong>. Farm to kitchen — 18-month aged, low GI, NABL lab tested.
           </p>
           <p style={{ fontSize: 11, color: "rgba(200,150,10,0.85)", letterSpacing: "0.08em", textTransform: "uppercase", fontWeight: 700 }}>
-            FSSAI Lic. No. 11224999000123
+            FSSAI Lic. No. 11224999000123 (JDP Enterprises)
           </p>
           <p style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginTop: 4 }}>
-            Same-day Bangalore Delivery
+            Same-Day Bangalore Delivery
           </p>
         </div>
 
@@ -119,7 +124,7 @@ export function Footer() {
             </a>
           </p>
           <p style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", marginTop: 16, lineHeight: 1.6 }}>
-            FSSAI Licensed · CFTRI NABL Accredited Testing · 100% Natural
+            JDP Enterprises · FSSAI Licensed · CFTRI NABL Accredited Testing
           </p>
         </div>
       </div>
@@ -135,7 +140,7 @@ export function Footer() {
         className="flex flex-col sm:flex-row items-center justify-between gap-3"
       >
         <p style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>
-          © 2026 Grainary · South India&apos;s Premium Rice Brand
+          © 2026 Grainary (JDP Enterprises) · All rights reserved
         </p>
         <p style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>
           Made with care in Bangalore 🌾

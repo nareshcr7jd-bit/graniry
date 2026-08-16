@@ -45,12 +45,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": "Grainary",
+    "name": "Grainary — JDP Enterprises",
+    "legalName": "JDP Enterprises",
     "image": "https://graniry-tawny.vercel.app/logo-dark.png",
     "@id": "https://graniry-tawny.vercel.app",
     "url": "https://graniry-tawny.vercel.app",
     "telephone": "+919900000000",
     "priceRange": "₹58 - ₹130 / kg",
+    "parentOrganization": {
+      "@type": "Organization",
+      "name": "JDP Enterprises"
+    },
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Koramangala 4th Block",
