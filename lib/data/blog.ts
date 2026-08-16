@@ -1,4 +1,4 @@
-import { BlogPost } from '@/lib/types'
+import { BlogPost } from '../types'
 
 export const BLOG_POSTS: BlogPost[] = [
   {

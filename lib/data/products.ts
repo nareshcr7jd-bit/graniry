@@ -1,4 +1,4 @@
-import { Product, ProductCategory, NutritionPer100g, ProductQCSpecs } from '@/lib/types'
+import { Product, ProductCategory, NutritionPer100g, ProductQCSpecs } from '../types'
 
 export const PRODUCTS: Product[] = [
   {
