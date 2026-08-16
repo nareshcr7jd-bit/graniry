@@ -5,6 +5,7 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 import { useCartStore } from "@/lib/store/cart"
 import { SearchModal } from "./SearchModal"
+import { KannadaToggle } from "./KannadaToggle"
 
 function GrainaryLogo() {
   return (
@@ -25,7 +26,8 @@ const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Products", href: "/products" },
   { label: "Health Science", href: "/#health" },
-  { label: "Packaging", href: "/packaging" },
+  { label: "Diabetic Care", href: "/diabetes-diet-rice" },
+  { label: "B2B Wholesale", href: "/b2b" },
   { label: "Blog", href: "/blog" },
 ]
 
@@ -87,6 +89,11 @@ export function Navbar() {
           borderBottom: "1px solid rgba(200,150,10,0.14)",
         }}
       >
+        {/* Kannada Banner (hidden by default until toggled) */}
+        <div id="kannada-banner" className="hidden bg-amber-500 text-emerald-950 text-center py-1 text-xs font-bold font-display border-b border-amber-600">
+          ಧಾನ್ಯರಿ — ದಕ್ಷಿಣ ಭಾರತದ ಪ್ರೀಮಿಯಂ ಅಕ್ಕಿ (ಉಚಿತ ಬೆಂಗಳೂರು ವಿತರಣೆ)
+        </div>
+
         <div
           className="flex items-center justify-between safe-top"
           style={{ maxWidth: 1320, margin: "0 auto", padding: "0 24px", height: 68 }}
@@ -121,7 +128,7 @@ export function Navbar() {
                   color: "rgba(255,255,255,0.7)",
                   fontSize: 13,
                   fontWeight: 500,
-                  padding: "9px 15px",
+                  padding: "9px 13px",
                   letterSpacing: "0.02em",
                   textDecoration: "none",
                 }}
@@ -141,6 +148,9 @@ export function Navbar() {
 
           {/* Right actions */}
           <div className="flex items-center gap-2">
+            {/* Language Toggle */}
+            <KannadaToggle />
+
             {/* Quick Search Button */}
             <button
               id="search-trigger-btn"
@@ -156,7 +166,7 @@ export function Navbar() {
             </button>
 
             <a
-              href="https://wa.me/919900000000"
+              href="https://wa.me/919900000000?text=Hi%20Grainary!%20I%20want%20to%20place%20an%20order."
               target="_blank"
               rel="noopener noreferrer"
               className="hidden sm:flex items-center gap-2 rounded-[7px] transition-all duration-200 no-underline"
@@ -212,7 +222,7 @@ export function Navbar() {
             ))}
             <div className="pt-2 flex flex-col gap-3">
               <a
-                href="https://wa.me/919900000000"
+                href="https://wa.me/919900000000?text=Hi%20Grainary!%20I%20want%20to%20order."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 py-3 rounded-lg bg-emerald-500/20 text-emerald-300 font-semibold border border-emerald-500/30 text-sm no-underline"

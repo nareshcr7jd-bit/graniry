@@ -21,29 +21,70 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Grainary — South India's Premium Rice Brand",
+  title: "Grainary — South India's Premium Aged & Low GI Rice Brand",
   description:
-    "Farm to your kitchen. Aged Sona Masoori with lower GI, lower starch, and a health story. Bangalore delivery. Diet Rice, Multigrain, Red Rice & more.",
+    "Aged Sona Masoori with clinically tested Low GI (54), lower starch, and transparent NABL lab testing. Same-day delivery in Bangalore. Diet Rice, Multigrain, Red Rice & more.",
   keywords: [
-    "Sona Masoori rice Bangalore",
-    "aged rice low GI",
-    "diet rice India",
-    "multigrain rice online",
-    "red rice Kavuni",
-    "brown rice whole grain",
-    "premium rice brand South India",
+    "Low GI Sona Masoori Bangalore",
+    "Aged rice online Bangalore",
+    "Diabetic diet rice India",
+    "Kavuni red rice Chettinad",
+    "Multigrain power rice protein",
+    "B2B restaurant rice wholesale Bangalore",
+    "PCOS brown rice whole grain",
   ],
   openGraph: {
     title: "Grainary — Eat Rice. Stay Fit.",
-    description: "South India's first premium rice brand with a health story. Low GI, aged, batch-tested.",
+    description: "South India's first premium rice brand with a health story. Low GI, 18-month aged, NABL batch-tested.",
     images: [{ url: "/og.jpg", width: 1200, height: 630 }],
   },
   twitter: { card: "summary_large_image" },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Grainary",
+    "image": "https://graniry-tawny.vercel.app/logo-dark.png",
+    "@id": "https://graniry-tawny.vercel.app",
+    "url": "https://graniry-tawny.vercel.app",
+    "telephone": "+919900000000",
+    "priceRange": "₹58 - ₹130 / kg",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Koramangala 4th Block",
+      "addressLocality": "Bangalore",
+      "addressRegion": "KA",
+      "postalCode": "560034",
+      "addressCountry": "IN"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 12.9352,
+      "longitude": 77.6245
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+      ],
+      "opens": "08:00",
+      "closes": "21:00"
+    },
+    "sameAs": [
+      "https://wa.me/919900000000"
+    ]
+  }
+
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable} h-full`} suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-full flex flex-col antialiased" style={{ background: "var(--cream)" }}>
         <Navbar />
         <CartDrawer />
