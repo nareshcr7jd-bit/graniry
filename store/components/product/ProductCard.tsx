@@ -88,13 +88,30 @@ export function ProductCard({ product, featured }: ProductCardProps) {
     setTimeout(() => setAdded(false), 1800)
   }
 
+  const categoryColorMap: Record<string, string> = {
+    everyday: '#C8960A',
+    diet: '#4ADE80',
+    premium: '#E8A800',
+    multigrain: '#FB923C',
+    ancient: '#FCA5A5',
+  }
+  const categoryStripeColor = categoryColorMap[product.category] || '#C8960A'
+
   return (
     <>
       <div
-        className="pcard group relative flex flex-col justify-between"
-        style={featured ? { gridColumn: "span 2" } : undefined}
+        className="product-card group relative flex flex-col justify-between overflow-hidden"
+        style={{
+          background: "white",
+          borderRadius: 16,
+          border: "1px solid rgba(0,0,0,0.07)",
+          transition: "transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out)",
+        }}
       >
-        {/* Bag image area */}
+        {/* Category color-coded top accent stripe */}
+        <div style={{ height: 4, background: categoryStripeColor, width: "100%" }} />
+
+        {/* Top visual area */}
         <Link href={`/products/${product.slug}`} className="no-underline block">
           <div
             style={{

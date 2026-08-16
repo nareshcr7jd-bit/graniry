@@ -355,6 +355,66 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
           </div>
         </div>
 
+        {/* Compare with Regular Rice Micro-Table */}
+        <div className="mt-16 p-8 rounded-3xl bg-white border border-amber-950/10 shadow-sm">
+          <h3 className="text-xl font-display font-bold text-emerald-950 mb-2">Compare vs. Fresh Commodity White Rice</h3>
+          <p className="text-xs text-gray-600 mb-6">See how {product.name} compares side-by-side with fresh-milled unaged white rice.</p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs text-left border-collapse">
+              <thead>
+                <tr className="border-b border-gray-200 text-gray-500 font-bold uppercase text-[10px]">
+                  <th className="py-3 px-4">Metric</th>
+                  <th className="py-3 px-4 text-emerald-950 font-extrabold">{product.name} (Grainary)</th>
+                  <th className="py-3 px-4 text-gray-400">Generic Fresh White Rice</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                <tr>
+                  <td className="py-3 px-4 font-semibold text-gray-700">Glycemic Index (GI)</td>
+                  <td className="py-3 px-4 font-bold text-emerald-900">{product.nutrition.gi} ({product.nutrition.gi <= 55 ? 'Certified Low GI' : 'Moderate GI'})</td>
+                  <td className="py-3 px-4 text-gray-500">72 (High GI — Glucose Spike)</td>
+                </tr>
+                <tr>
+                  <td className="py-3 px-4 font-semibold text-gray-700">Aging Duration</td>
+                  <td className="py-3 px-4 font-bold text-emerald-900">{product.aging || 'Fresh Crop Selected'}</td>
+                  <td className="py-3 px-4 text-gray-500">0–2 Months (High Moisture/Starch)</td>
+                </tr>
+                <tr>
+                  <td className="py-3 px-4 font-semibold text-gray-700">Moisture Content</td>
+                  <td className="py-3 px-4 font-bold text-emerald-900">{product.qcSpecs.moisturePercent}</td>
+                  <td className="py-3 px-4 text-gray-500">&gt; 13.5% (Sticky / Heavy)</td>
+                </tr>
+                <tr>
+                  <td className="py-3 px-4 font-semibold text-gray-700">Protein per 100g</td>
+                  <td className="py-3 px-4 font-bold text-emerald-900">{product.nutrition.protein}g</td>
+                  <td className="py-3 px-4 text-gray-500">6.2g</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Recipe Ideas & Chef Notes */}
+        <div className="mt-12 p-8 rounded-3xl bg-emerald-950 text-white">
+          <span className="text-amber-400 text-xs font-bold uppercase tracking-widest block mb-2">Kitchen Guide & Dish Ideas</span>
+          <h3 className="text-2xl font-display font-bold text-white mb-4">Best Cooking Uses for {product.name}</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            {product.bestFor.map((dish, idx) => (
+              <div key={dish} className="p-4 rounded-2xl bg-white/10 border border-white/15">
+                <span className="text-amber-300 font-bold text-sm block mb-1">Dish #{idx + 1}: {dish}</span>
+                <p className="text-white/70">
+                  Cook with water ratio {product.waterRatio}. Cook time: {product.cookTime}. Pair with fresh Bangalore sambar or chutney.
+                </p>
+              </div>
+            ))}
+          </div>
+          {product.recipeNotes && (
+            <div className="mt-4 p-4 rounded-2xl bg-amber-500/20 border border-amber-500/30 text-amber-200 text-xs font-medium">
+              💡 <strong>Chef Recipe Note:</strong> {product.recipeNotes}
+            </div>
+          )}
+        </div>
+
         {/* Related products */}
         <div style={{ marginTop: 80 }}>
           <h2 className="font-display" style={{ fontSize: 28, fontWeight: 700, color: "#111", marginBottom: 28 }}>
