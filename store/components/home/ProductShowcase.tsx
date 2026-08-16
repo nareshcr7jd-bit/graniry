@@ -5,6 +5,7 @@ import Link from "next/link"
 import { PRODUCTS, ProductCategory } from "@/lib/products"
 import { ProductCard } from "@/components/product/ProductCard"
 import { ProductComparisonModal } from "@/components/product/ProductComparisonModal"
+import { RiceDecisionQuizModal } from "@/components/product/RiceDecisionQuizModal"
 import { useLanguageStore } from "@/lib/store/language"
 import { TRANSLATIONS } from "@/lib/translations"
 
@@ -13,6 +14,7 @@ type Filter = "all" | ProductCategory
 export function ProductShowcase() {
   const [active, setActive] = useState<Filter>("all")
   const [isCompareOpen, setIsCompareOpen] = useState(false)
+  const [isQuizOpen, setIsQuizOpen] = useState(false)
   const { language } = useLanguageStore()
   const t = TRANSLATIONS[language]?.showcase || TRANSLATIONS.en.showcase
 
@@ -60,7 +62,14 @@ export function ProductShowcase() {
               </p>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                onClick={() => setIsQuizOpen(true)}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gold text-emerald-950 font-display font-extrabold text-xs hover:bg-amber-400 transition-colors shadow-md cursor-pointer"
+              >
+                <span>💡 {language === 'kn' ? 'ನನಗೆ ಯಾವ ಅಕ್ಕಿ ಬೇಕು?' : 'Which Rice Should I Buy?'}</span>
+              </button>
+
               <button
                 onClick={() => setIsCompareOpen(true)}
                 className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-emerald-950 text-amber-300 font-display font-bold text-xs hover:bg-emerald-900 transition-colors shadow-md cursor-pointer"
@@ -130,8 +139,11 @@ export function ProductShowcase() {
         </div>
       </section>
 
-      {/* Variety Comparison Matrix Modal */}
+      {/* Comparison Modal */}
       <ProductComparisonModal isOpen={isCompareOpen} onClose={() => setIsCompareOpen(false)} />
+
+      {/* Rice Decision Quiz Modal */}
+      <RiceDecisionQuizModal isOpen={isQuizOpen} onClose={() => setIsQuizOpen(false)} />
     </>
   )
 }

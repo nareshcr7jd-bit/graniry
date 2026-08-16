@@ -201,6 +201,17 @@ export function ProductCard({ product, featured }: ProductCardProps) {
               {product.description.length > 90 ? "…" : ""}
             </p>
 
+            {/* Raw vs Steam quick buyer guide chip */}
+            {(product.id === 'sona-masoori-old-raw' || product.id === 'sona-masoori-steam') && (
+              <div className="mb-3 p-2 rounded-xl bg-amber-50 border border-amber-200 text-[10px] text-amber-950 font-medium leading-tight">
+                {product.id === 'sona-masoori-old-raw' ? (
+                  <span>💡 <strong>Raw Rice:</strong> Aged 12–24m · Lower GI (56) · Traditional fluffy texture</span>
+                ) : (
+                  <span>♨️ <strong>Steam Rice:</strong> Parboiled · Cooks in 14 min · Nutrient-locked for tiffin</span>
+                )}
+              </div>
+            )}
+
             {/* Health chips */}
             <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginBottom: 16 }}>
               {product.healthClaims.slice(0, 3).map(claim => (
@@ -221,17 +232,27 @@ export function ProductCard({ product, featured }: ProductCardProps) {
               ))}
             </div>
 
-            {/* Size selector */}
+            {/* Size selector with savings badges */}
             <div style={{ display: "flex", gap: 5, flexWrap: "wrap", marginBottom: 14 }}>
-              {PACK_SIZES.map(size => (
-                <button
-                  key={size}
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); setSelectedSize(size) }}
-                  className={`size-btn ${selectedSize === size ? "active" : ""}`}
-                >
-                  {size}kg
-                </button>
-              ))}
+              {PACK_SIZES.map(size => {
+                const isSelected = selectedSize === size
+                const discount = size === 25 ? "Save 15%" : size === 10 ? "Save 10%" : size === 5 ? "Save 5%" : null
+                return (
+                  <button
+                    key={size}
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); setSelectedSize(size) }}
+                    className={`size-btn relative ${isSelected ? "active" : ""}`}
+                    title={discount ? `Bulk order discount: ${discount}` : `${size}kg pack`}
+                  >
+                    {size}kg
+                    {discount && isSelected && (
+                      <span className="ml-1 text-[8px] font-bold text-amber-400 uppercase">
+                        (-{size === 25 ? '15%' : size === 10 ? '10%' : '5%'})
+                      </span>
+                    )}
+                  </button>
+                )
+              })}
             </div>
           </div>
 

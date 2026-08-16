@@ -80,12 +80,29 @@ export function FAQ() {
     return matchesSearch && matchesCat
   })
 
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": FAQS.map((faq) => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.a,
+      },
+    })),
+  }
+
   return (
     <section
       id="faq"
       className="section-padding"
       style={{ background: "var(--cream)" }}
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <div style={{ maxWidth: 860, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 36 }}>
           <p className="eyebrow" style={{ marginBottom: 12 }}>{t.eyebrow}</p>

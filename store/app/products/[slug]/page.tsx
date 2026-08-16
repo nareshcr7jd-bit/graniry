@@ -6,6 +6,7 @@ import { getProductBySlug, PRODUCTS, PACK_SIZES } from "@/lib/products"
 import { useCartStore } from "@/lib/store/cart"
 import { formatPrice, calcPrice } from "@/lib/utils"
 import { BagMockup } from "@/components/product/BagMockup"
+import { LabCertificateModal } from "@/components/product/LabCertificateModal"
 import Link from "next/link"
 
 export default function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -17,6 +18,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
   const [selectedSize, setSelectedSize] = useState(5)
   const [qty, setQty] = useState(1)
   const [added, setAdded] = useState(false)
+  const [isCertModalOpen, setIsCertModalOpen] = useState(false)
   const { addItem, openCart } = useCartStore()
 
   const price = calcPrice(product.pricePerKg, selectedSize) * qty
@@ -38,8 +40,37 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
 
   const related = PRODUCTS.filter(p => p.id !== product.id && (p.category === product.category || p.featured)).slice(0, 3)
 
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.name,
+    "image": `https://graniry-tawny.vercel.app/packaging-lineup.png`,
+    "description": product.description,
+    "sku": product.id,
+    "brand": {
+      "@type": "Brand",
+      "name": "Grainary"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": product.pricePerKg,
+      "priceCurrency": "INR",
+      "availability": "https://schema.org/InStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "Grainary"
+      }
+    }
+  }
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--cream)" }}>
+      {/* Schema injection */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+
       {/* Breadcrumb */}
       <div style={{ background: "var(--forest)", padding: "14px 24px" }}>
         <div style={{ maxWidth: 1320, margin: "0 auto" }}>
@@ -71,7 +102,6 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                 overflow: "hidden",
               }}
             >
-              {/* Texture */}
               <div style={{
                 position: "absolute", inset: 0,
                 backgroundImage: "repeating-linear-gradient(45deg, transparent 0, transparent 20px, rgba(255,255,255,0.012) 20px, rgba(255,255,255,0.012) 40px)",
@@ -81,10 +111,24 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               </div>
             </div>
 
+            {/* QC & Lab Audit Bar */}
+            <div className="mt-4 p-4 rounded-2xl bg-white border border-amber-950/10 flex items-center justify-between shadow-sm">
+              <div>
+                <p className="text-[10px] uppercase font-bold text-gray-500">NABL Accredited Quality Audit</p>
+                <p className="text-xs font-bold text-emerald-950">Batch #{product.qcSpecs.labCertificateNo}</p>
+              </div>
+              <button
+                onClick={() => setIsCertModalOpen(true)}
+                className="px-3 py-1.5 rounded-lg bg-emerald-950 text-amber-300 font-bold text-xs hover:bg-emerald-900 transition-colors"
+              >
+                Inspect Certificate 🔬
+              </button>
+            </div>
+
             {/* Nutrition panel */}
             <div
               style={{
-                marginTop: 24,
+                marginTop: 16,
                 background: "white",
                 borderRadius: 16,
                 padding: 24,
@@ -174,7 +218,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               }}
             >
               <p style={{ fontSize: 11, fontWeight: 700, color: "var(--forest)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12 }}>
-                Health Claims
+                Health & Quality Proof
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {product.healthClaims.map(claim => (
@@ -186,66 +230,47 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               </div>
             </div>
 
-            {/* Best for */}
-            <p style={{ fontSize: 12, fontWeight: 600, color: "#888", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10 }}>
-              Best for
-            </p>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 28 }}>
-              {product.bestFor.map(use => (
-                <span
-                  key={use}
-                  style={{
-                    background: "var(--parchment)",
-                    color: "var(--moss)",
-                    fontSize: 11,
-                    fontWeight: 600,
-                    padding: "5px 12px",
-                    borderRadius: 6,
-                    border: "1px solid rgba(28,92,46,0.1)",
-                  }}
-                >
-                  {use}
-                </span>
-              ))}
-            </div>
-
             {/* Size selector */}
             <p style={{ fontSize: 12, fontWeight: 600, color: "#888", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10 }}>
-              Pack Size
+              Select Pack Size & Volume Discount
             </p>
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 24 }}>
-              {PACK_SIZES.map(size => (
-                <button
-                  key={size}
-                  onClick={() => setSelectedSize(size)}
-                  style={{
-                    background: selectedSize === size ? "var(--forest)" : "white",
-                    color: selectedSize === size ? "white" : "#555",
-                    border: selectedSize === size ? "1.5px solid var(--forest)" : "1.5px solid rgba(0,0,0,0.12)",
-                    fontSize: 14,
-                    fontWeight: 600,
-                    padding: "10px 18px",
-                    borderRadius: 8,
-                    cursor: "pointer",
-                    transition: "all 0.15s",
-                    minHeight: 44,
-                  }}
-                >
-                  {size}kg
-                  {size >= 10 && (
-                    <span
-                      style={{
-                        display: "block",
-                        fontSize: 9,
-                        color: selectedSize === size ? "rgba(255,255,255,0.6)" : "var(--sage)",
-                        marginTop: 1,
-                      }}
-                    >
-                      Best Value
-                    </span>
-                  )}
-                </button>
-              ))}
+              {PACK_SIZES.map(size => {
+                const discount = size === 25 ? "Save 15%" : size === 10 ? "Save 10%" : size === 5 ? "Save 5%" : null
+                return (
+                  <button
+                    key={size}
+                    onClick={() => setSelectedSize(size)}
+                    style={{
+                      background: selectedSize === size ? "var(--forest)" : "white",
+                      color: selectedSize === size ? "white" : "#555",
+                      border: selectedSize === size ? "1.5px solid var(--forest)" : "1.5px solid rgba(0,0,0,0.12)",
+                      fontSize: 14,
+                      fontWeight: 600,
+                      padding: "10px 18px",
+                      borderRadius: 8,
+                      cursor: "pointer",
+                      transition: "all 0.15s",
+                      minHeight: 44,
+                    }}
+                  >
+                    {size}kg
+                    {discount && (
+                      <span
+                        style={{
+                          display: "block",
+                          fontSize: 9,
+                          color: selectedSize === size ? "rgba(255,255,255,0.7)" : "#166534",
+                          marginTop: 1,
+                          fontWeight: 700,
+                        }}
+                      >
+                        {discount}
+                      </span>
+                    )}
+                  </button>
+                )
+              })}
             </div>
 
             {/* Qty + Price + CTA */}
@@ -313,15 +338,15 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               {added ? "✓ Added to Cart" : `Add to Cart — ${formatPrice(price)}`}
             </button>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 12 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 16 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#666" }}>
-                <span>🚚</span> Bangalore delivery
+                <span>🚚</span> Express Bangalore delivery
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#666" }}>
-                <span>🔬</span> Batch-tested
+                <span>🔬</span> CFTRI / NABL lab audited
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#666" }}>
-                <span>🌿</span> No preservatives
+                <span>🌿</span> 100% natural, no fumigation
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#666" }}>
                 <span>⏱</span> Cooks in {product.cookTime}
@@ -345,12 +370,6 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                     borderRadius: 14,
                     overflow: "hidden",
                     transition: "transform 0.25s var(--ease-out)",
-                  }}
-                  onMouseEnter={e => {
-                    (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)"
-                  }}
-                  onMouseLeave={e => {
-                    (e.currentTarget as HTMLElement).style.transform = "translateY(0)"
                   }}
                 >
                   <div
@@ -378,6 +397,9 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
           </div>
         </div>
       </div>
+
+      {/* Lab Certificate Modal */}
+      <LabCertificateModal product={product} isOpen={isCertModalOpen} onClose={() => setIsCertModalOpen(false)} />
     </div>
   )
 }
