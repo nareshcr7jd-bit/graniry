@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/diabetes-diet-rice/layout,_N_T_/diabetes-diet-rice/page,_N_T_/diabetes-diet-rice"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/diabetes-diet-rice/__PAGE__",
+    "/diabetes-diet-rice",
+    "/_index",
+    "/_head"
+  ]
+}

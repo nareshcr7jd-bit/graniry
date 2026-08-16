@@ -1,0 +1,15 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/b2b/page": "/b2b",
+  "/blog/[slug]/page": "/blog/[slug]",
+  "/blog/page": "/blog",
+  "/diabetes-diet-rice/page": "/diabetes-diet-rice",
+  "/favicon.ico/route": "/favicon.ico",
+  "/fitness-multigrain/page": "/fitness-multigrain",
+  "/packaging/page": "/packaging",
+  "/page": "/",
+  "/pcos-brown-rice/page": "/pcos-brown-rice",
+  "/products/[slug]/page": "/products/[slug]",
+  "/products/page": "/products"
+}

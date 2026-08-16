@@ -1,0 +1,15 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/b2b/page": "app/b2b/page.js",
+  "/blog/[slug]/page": "app/blog/[slug]/page.js",
+  "/blog/page": "app/blog/page.js",
+  "/diabetes-diet-rice/page": "app/diabetes-diet-rice/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/fitness-multigrain/page": "app/fitness-multigrain/page.js",
+  "/packaging/page": "app/packaging/page.js",
+  "/page": "app/page.js",
+  "/pcos-brown-rice/page": "app/pcos-brown-rice/page.js",
+  "/products/[slug]/page": "app/products/[slug]/page.js",
+  "/products/page": "app/products/page.js"
+}
