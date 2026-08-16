@@ -5,6 +5,7 @@ import { Navbar } from "@/components/layout/Navbar"
 import { CartDrawer } from "@/components/layout/CartDrawer"
 import { Footer } from "@/components/layout/Footer"
 import { ChatBot } from "@/components/layout/ChatBot"
+import { ToastContainer } from "@/components/ui/ToastContainer"
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-full flex flex-col antialiased" style={{ background: "var(--cream)" }}>
         <Navbar />
         <CartDrawer />
+        <ToastContainer />
         <main className="flex-1 pt-[68px]">{children}</main>
         <Footer />
         <ChatBot />

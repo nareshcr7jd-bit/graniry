@@ -6,6 +6,7 @@ import { Product, PACK_SIZES } from "@/lib/products"
 import { useCartStore } from "@/lib/store/cart"
 import { formatPrice, calcPrice } from "@/lib/utils"
 import { BagMockup } from "./BagMockup"
+import { ProductQuickView } from "./ProductQuickView"
 
 interface ProductCardProps {
   product: Product
@@ -60,6 +61,7 @@ function Badge({ label }: { label: string }) {
 export function ProductCard({ product, featured }: ProductCardProps) {
   const [selectedSize, setSelectedSize] = useState(5)
   const [added, setAdded] = useState(false)
+  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false)
   const { addItem } = useCartStore()
 
   const price = calcPrice(product.pricePerKg, selectedSize)
@@ -67,6 +69,7 @@ export function ProductCard({ product, featured }: ProductCardProps) {
 
   function handleAddToCart(e: React.MouseEvent) {
     e.preventDefault()
+    e.stopPropagation()
     addItem({
       productId: product.id,
       name: product.name,
@@ -82,132 +85,150 @@ export function ProductCard({ product, featured }: ProductCardProps) {
   }
 
   return (
-    <Link href={`/products/${product.slug}`} className="no-underline block">
+    <>
       <div
-        className="pcard"
+        className="pcard group relative flex flex-col justify-between"
         style={featured ? { gridColumn: "span 2" } : undefined}
       >
         {/* Bag image area */}
-        <div
-          style={{
-            height: featured ? 280 : 220,
-            background: product.bagGradient,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            position: "relative",
-            overflow: "hidden",
-          }}
-        >
-          {/* Grid texture */}
+        <Link href={`/products/${product.slug}`} className="no-underline block">
           <div
             style={{
-              position: "absolute",
-              inset: 0,
-              backgroundImage: "repeating-linear-gradient(45deg, transparent 0, transparent 20px, rgba(255,255,255,0.012) 20px, rgba(255,255,255,0.012) 40px)",
-            }}
-          />
-
-          {/* Centered bag mockup */}
-          <div
-            style={{
-              position: "relative",
-              zIndex: 1,
-              transform: "scale(0.88)",
-              transition: "transform 0.35s var(--ease-spring)",
-            }}
-            className="group-hover:scale-95"
-          >
-            <BagMockup product={product} sizeKg={selectedSize} />
-          </div>
-
-          {/* Badges overlay */}
-          <div
-            style={{
-              position: "absolute",
-              top: 12,
-              left: 12,
-              right: 12,
+              height: featured ? 280 : 220,
+              background: product.bagGradient,
               display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              gap: 6,
-              zIndex: 10,
+              alignItems: "center",
+              justifyContent: "center",
+              position: "relative",
+              overflow: "hidden",
             }}
           >
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
-              {product.badges.slice(0, 2).map(b => <Badge key={b} label={b} />)}
+            {/* Grid texture */}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                backgroundImage: "repeating-linear-gradient(45deg, transparent 0, transparent 20px, rgba(255,255,255,0.012) 20px, rgba(255,255,255,0.012) 40px)",
+              }}
+            />
+
+            {/* Quick view button overlay on hover */}
+            <button
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setIsQuickViewOpen(true)
+              }}
+              className="absolute z-20 px-3 py-1.5 rounded-full bg-black/60 hover:bg-black/80 text-white font-semibold text-xs opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-lg backdrop-blur-sm transform translate-y-2 group-hover:translate-y-0"
+            >
+              👁 Quick View
+            </button>
+
+            {/* Centered bag mockup */}
+            <div
+              style={{
+                position: "relative",
+                zIndex: 1,
+                transform: "scale(0.88)",
+                transition: "transform 0.35s var(--ease-spring)",
+              }}
+              className="group-hover:scale-95"
+            >
+              <BagMockup product={product} sizeKg={selectedSize} />
             </div>
-            {product.popular && (
-              <span
-                style={{
-                  background: "rgba(200,150,10,0.92)",
-                  color: "#0D2E1A",
-                  fontSize: 9,
-                  fontWeight: 700,
-                  padding: "3px 8px",
-                  borderRadius: 4,
-                  letterSpacing: "0.06em",
-                  textTransform: "uppercase",
-                  flexShrink: 0,
-                }}
-              >
-                Popular
-              </span>
-            )}
+
+            {/* Badges overlay */}
+            <div
+              style={{
+                position: "absolute",
+                top: 12,
+                left: 12,
+                right: 12,
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-start",
+                gap: 6,
+                zIndex: 10,
+              }}
+            >
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                {product.badges.slice(0, 2).map(b => <Badge key={b} label={b} />)}
+              </div>
+              {product.popular && (
+                <span
+                  style={{
+                    background: "rgba(200,150,10,0.92)",
+                    color: "#0D2E1A",
+                    fontSize: 9,
+                    fontWeight: 700,
+                    padding: "3px 8px",
+                    borderRadius: 4,
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                    flexShrink: 0,
+                  }}
+                >
+                  Popular
+                </span>
+              )}
+            </div>
           </div>
-        </div>
+        </Link>
 
         {/* Card body */}
-        <div style={{ padding: "20px 20px 18px" }}>
-          <h3
-            className="font-display"
-            style={{
-              fontSize: 18,
-              fontWeight: 700,
-              color: "#111",
-              marginBottom: 6,
-              lineHeight: 1.2,
-            }}
-          >
-            {product.name}
-          </h3>
-          <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, marginBottom: 14 }}>
-            {product.description.slice(0, 90)}
-            {product.description.length > 90 ? "…" : ""}
-          </p>
-
-          {/* Health chips */}
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginBottom: 16 }}>
-            {product.healthClaims.slice(0, 3).map(claim => (
-              <span
-                key={claim}
+        <div style={{ padding: "20px 20px 18px" }} className="flex-1 flex flex-col justify-between">
+          <div>
+            <Link href={`/products/${product.slug}`} className="no-underline block">
+              <h3
+                className="font-display group-hover:text-amber-700 transition-colors"
                 style={{
-                  background: "var(--parchment)",
-                  color: "var(--moss)",
-                  fontSize: 10,
-                  fontWeight: 600,
-                  padding: "3px 9px",
-                  borderRadius: 4,
-                  border: "1px solid rgba(28,92,46,0.1)",
+                  fontSize: 18,
+                  fontWeight: 700,
+                  color: "#111",
+                  marginBottom: 6,
+                  lineHeight: 1.2,
                 }}
               >
-                {claim.split(" ").slice(0, 4).join(" ")}
-              </span>
-            ))}
-          </div>
+                {product.name}
+              </h3>
+            </Link>
+            <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, marginBottom: 14 }}>
+              {product.description.slice(0, 90)}
+              {product.description.length > 90 ? "…" : ""}
+            </p>
 
-          {/* Size selector */}
-          <div style={{ display: "flex", gap: 5, flexWrap: "wrap", marginBottom: 14 }}>
-            {PACK_SIZES.map(size => (
-              <button
-                key={size}
-                onClick={(e) => { e.preventDefault(); setSelectedSize(size) }}
-                className={`size-btn ${selectedSize === size ? "active" : ""}`}
-              >
-                {size}kg
-              </button>
-            ))}
+            {/* Health chips */}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginBottom: 16 }}>
+              {product.healthClaims.slice(0, 3).map(claim => (
+                <span
+                  key={claim}
+                  style={{
+                    background: "var(--parchment)",
+                    color: "var(--moss)",
+                    fontSize: 10,
+                    fontWeight: 600,
+                    padding: "3px 9px",
+                    borderRadius: 4,
+                    border: "1px solid rgba(28,92,46,0.1)",
+                  }}
+                >
+                  {claim.split(" ").slice(0, 4).join(" ")}
+                </span>
+              ))}
+            </div>
+
+            {/* Size selector */}
+            <div style={{ display: "flex", gap: 5, flexWrap: "wrap", marginBottom: 14 }}>
+              {PACK_SIZES.map(size => (
+                <button
+                  key={size}
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); setSelectedSize(size) }}
+                  className={`size-btn ${selectedSize === size ? "active" : ""}`}
+                >
+                  {size}kg
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Price row + CTA */}
@@ -262,6 +283,11 @@ export function ProductCard({ product, featured }: ProductCardProps) {
           </div>
         </div>
       </div>
-    </Link>
+
+      {/* Quick View Lightbox */}
+      {isQuickViewOpen && (
+        <ProductQuickView product={product} onClose={() => setIsQuickViewOpen(false)} />
+      )}
+    </>
   )
 }

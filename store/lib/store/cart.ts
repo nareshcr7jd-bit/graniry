@@ -2,6 +2,7 @@
 
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { useToastStore } from './toast'
 
 export interface CartItem {
   id: string          // productId + sizeKg
@@ -45,6 +46,11 @@ export const useCartStore = create<CartStore>()(
         } else {
           set(state => ({ items: [...state.items, { ...item, id }], isOpen: true }))
         }
+        useToastStore.getState().addToast({
+          title: `Added ${item.name}`,
+          description: `${item.sizeKg}kg pack added to your cart.`,
+          type: 'gold'
+        })
       },
 
       removeItem: (id) => {
